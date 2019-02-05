@@ -1,0 +1,33 @@
+.grey-bar {
+  background-color: $bg-body;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $standard-padding;
+  #store-info {
+      h2, h3 {
+          margin: 0;
+          padding: 0;
+          display: inline-block;
+      }
+      h2 {
+          font-size: 20px;
+          font-weight: bold;
+          margin-right: 8px;
+      }
+      h3 {
+          font-size: 17px;
+          margin-left: 5px;
+      }
+  }
+  #range-picker {
+      text-align: right;
+  }
+  .mat-form-field {
+      margin-bottom: -1.25em;
+  }
+  .mat-form-field:not(:last-of-type) {
+      margin-right: 16px;
+  }
+}

@@ -1,0 +1,45 @@
+<div class="subHeader" id="Breadcrumb">
+    <div class="left">
+        <h3>{{ 'config.status.title' | translate}}</h3>
+        <span>-</span>
+        <span>{{companies[0]?.name}}</span>
+    </div>
+    <div class="right">
+        <mat-form-field class="example-full-width" id="adjust">
+            <input class="alignRightDate" matInput [max]="maxDate" [matDatepicker]="picker" [(ngModel)]="dateDefault" (change)="updateStatus()"
+                (dateChange)="updateStatus()" placeholder="{{ 'general.dateDefault' | translate}}">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="loading-wrapper" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<mat-table #table [dataSource]="dataSource" *ngIf="!loading">
+    <ng-container matColumnDef="store">
+        <mat-header-cell *matHeaderCellDef>{{'config.status.store' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="storeName" [ngClass]="{hasNoData: element.qvisitors == 0 || element.qtickets == 0 }"> {{element.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="qInvoices">
+        <mat-header-cell *matHeaderCellDef> {{'config.status.qTickets' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> 
+            <span *ngIf="element.qtickets == 0" class="hasNoData">Sin Datos</span>
+            <span *ngIf="element.qtickets != 0">{{element.qtickets}}</span>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="qVisitors">
+        <mat-header-cell *matHeaderCellDef> {{'config.status.qMacAddress' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <span *ngIf="element.qvisitors == 0" class="hasNoData">Sin Datos</span>
+            <span *ngIf="element.qvisitors != 0">{{element.qvisitors}}</span>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

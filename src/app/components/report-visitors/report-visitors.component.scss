@@ -1,0 +1,32 @@
+@import "../../../paleta_ocp.scss";
+
+.filters {
+    position: relative;
+    padding-bottom: $standard-padding;
+    .mat-form-field {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart {
+    position: relative;
+    padding: $small-padding $standard-padding;
+    h3 {
+        margin: $standard-padding 0 $small-padding 0;
+    }
+    .v-text {
+        transform: rotate(-90deg);
+        font-size: 0.8em;
+        color: $gris-1;
+    }   
+    .chart-wrapper {
+        width: calc(100% - 1em);
+    }
+}

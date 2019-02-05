@@ -1,0 +1,13 @@
+<main>
+    <h1 *ngIf="status!=0" [routerLink]="['/error-handling']" [queryParams]= "{status:status}">{{'errorHandling.title' | translate}} {{status}}</h1>
+    <h1 *ngIf="status==0" >{{'errorHandling.title' | translate}}</h1>
+    <article>
+        <div class="error-handling">
+            <mat-icon>error</mat-icon>
+            <div>
+                <h2>{{'errorHandling.subtitle' | translate}}</h2>
+                <p>{{'errorHandling.detail' | translate}}</p>
+            </div>
+        </div>
+    </article>
+</main>

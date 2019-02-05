@@ -1,0 +1,103 @@
+<aside *ngIf="isUserLoggedIn()" class="aside">
+    <div class="logoMenu">
+        <a (click)="switchMenu(200)">
+            <mat-icon>menu</mat-icon>
+        </a>
+        <div class="divider-v"></div>
+    </div>
+    <div class="contenidoAside" [ngClass]="{contenidoAsideOpen: menuStatus, contenidoAsideClose: !menuStatus }">
+        <div [ngClass]="{display:menuStatus, noDisplay:!menuStatus}" id="logo">
+            <img [ngClass]="{fadeIn: !menuStatus, fadeOut: menuStatus}" class="imgIsoLogo" src="./assets/images/OCP-iso.png" alt="OCP">
+            <img [ngClass]="{fadeIn: menuStatus, fadeOut: !menuStatus}" class="imgLogo" src="./assets/images/OCP-logo.png" alt="OCP">
+        </div>
+        <nav [ngClass]="{display:menuStatus, noDisplay:!menuStatus}">
+
+            <a routerLinkActive="active-link" (click)="closeMenu()" [routerLink]="['home']" [ngClass]="{ navMenuOpen: menuStatus, navMenuClose: !menuStatus }" class="menu-item" *ngIf="menuVisibility['/home']">
+                <mat-icon title="{{'side-nav.home' | translate}}">home</mat-icon>
+                <span *ngIf="menuStatus">{{'side-nav.home' | translate}}</span>
+            </a>
+
+            <a class="menu-item" *ngIf="menuVisibility['/store-chain-operations'] || menuVisibility['/store-operations']" (click)="switchSubMenu('operations')" routerLinkActive="active-link" [ngClass]="{navMenuOpen: menuStatus, navMenuClose: !menuStatus }">
+                <mat-icon title="{{'side-nav.operations' | translate}}">dashboard</mat-icon>
+                <span *ngIf="menuStatus">{{'side-nav.operations' | translate}}</span>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </a>
+
+            <div class="subMenu" [ngClass]="{subMenuOpen : submenus.operations, subMenuClose : !submenus.operations  }">
+                <a class="menu-item" *ngIf="menuVisibility['/store-chain-operations']" routerLinkActive="active-sublink" (click)="closeMenu()" [routerLink]="['store-chain-operations']">
+                    {{'store-operations.storeChainOperations' | translate}}
+                </a>
+                <a class="menu-item" *ngIf="menuVisibility['/store-operations']" routerLinkActive="active-sublink" (click)="closeMenu()" [routerLink]="['store-operations']">
+                    {{'store-operations.storeOperations' | translate}}
+                </a>
+            </div>
+
+            <a routerLinkActive="active-link" (click)="closeMenu()" [routerLink]="['store-customer']" [ngClass]="{ navMenuOpen: menuStatus, navMenuClose: !menuStatus }" class="menu-item" *ngIf="menuVisibility['/store-customer']">
+                <mat-icon title="{{'store-customer.title' | translate}}">group_work</mat-icon>
+                <span *ngIf="menuStatus">{{'store-customer.title' | translate}}</span>
+            </a>
+
+            <a class="menu-item" *ngIf="menuVisibility['/salesforce']" routerLinkActive="active-link" (click)="closeMenu()" [routerLink]="['salesforce']" [ngClass]="{ navMenuOpen: menuStatus, navMenuClose: !menuStatus }">
+                <mat-icon title="{{'salesforce.title' | translate}}">&#xE7EF;</mat-icon>
+                <span *ngIf="menuStatus">{{'salesforce.title' | translate}}</span>
+            </a>
+
+            <a routerLinkActive="active-link" [ngClass]="{ navMenuOpen: menuStatus, navMenuClose: !menuStatus }" class="menu-item" *ngIf="menuVisibility['/reports']" (click)="switchSubMenu('reports')">
+                <mat-icon title="{{'reports.title' | translate}}">pie_chart</mat-icon>
+                <span *ngIf="menuStatus">{{'reports.title' | translate}}</span>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </a>
+
+            <div class="subMenu" [ngClass]="{subMenuOpen : submenus.reports, subMenuClose : !submenus.reports  }">
+                <a routerLinkActive="active-sublink" (click)="closeMenu()" [routerLink]="['reports' , 'visitors']" class="menu-item" *ngIf="menuVisibility['/reports/visitors']">
+                    {{'reports.performance' | translate}}
+                </a>
+            </div>
+
+
+            <a class="menu-item" *ngIf="menuVisibility['/settings']" (click)="switchSubMenu('settings')" routerLinkActive="active-link" [ngClass]="{navMenuOpen: menuStatus, navMenuClose: !menuStatus }">
+                <mat-icon title="{{'side-nav.configuration' | translate}}">settings</mat-icon>
+                <span *ngIf="menuStatus">{{'side-nav.configuration' | translate}}</span>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </a>
+
+            <div class="subMenu" [ngClass]="{subMenuOpen : submenus.settings, subMenuClose : !submenus.settings  }">
+
+                <a class="menu-item" *ngIf="menuVisibility['/settings/usuarios']" routerLinkActive="active-sublink" (click)="closeMenu()" [routerLink]="['settings', 'usuarios']">
+                    {{'config.user.users' | translate}}
+                </a>
+                <a class="menu-item" *ngIf="menuVisibility['/settings/regions']" routerLinkActive="active-sublink" (click)="closeMenu()" [routerLink]="['settings', 'regions']">
+                    {{'general.regions' | translate}}
+                </a>
+                <a class="menu-item" *ngIf="menuVisibility['/settings/stores']"  routerLinkActive="active-sublink" (click)="closeMenu()" [routerLink]="['settings', 'stores']">
+                    {{'general.stores' | translate}}
+                </a>
+                <a routerLinkActive="active-sublink" (click)="closeMenu()" [routerLink]="['settings', 'apis']" class="menu-item" *ngIf="menuVisibility['/settings/apis']">
+                    {{'config.apis.title' | translate}}
+                </a>
+                <a class="menu-item" *ngIf="menuVisibility['/settings/general']" routerLinkActive="active-sublink" (click)="closeMenu()" [routerLink]="['settings', 'general']">
+                    {{'config.general.title' | translate}}
+                </a>
+                <a class="menu-item" *ngIf="menuVisibility['/settings/status']" routerLinkActive="active-sublink" (click)="closeMenu()"
+                    [routerLink]="['settings', 'status']">
+                    {{'config.status.title' | translate}}
+                </a>
+                <a class="menu-item" *ngIf="menuVisibility['/settings/splash-page']" routerLinkActive="active-sublink" (click)="closeMenu()"
+                    [routerLink]="['settings', 'splash-page']">
+                    {{'side-nav.splashPage' | translate}}
+                </a>
+            </div>
+
+
+
+            <!-- Menu responsive -->
+
+            <div class="responsive">
+                <a routerLinkActive="active-link" (click)="logout()" [ngClass]="{navMenuOpen: menuStatus, navMenuClose: !menuStatus }">
+                    <mat-icon>input</mat-icon>
+                    <span *ngIf="menuStatus">{{'side-nav.logout' | translate}}</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+</aside>

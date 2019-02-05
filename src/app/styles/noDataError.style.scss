@@ -1,0 +1,21 @@
+@import "../../paleta_ocp.scss";
+.errorWrapper {
+    text-align: center;
+    width: 100%;
+    background-color: $bg-body;
+    border-radius: $standard-radius;
+    color: $gris-1;
+    padding: calc(#{$standard-padding} * 3) 0;
+    > .mat-icon {
+      font-size: 4em;
+      height: auto;
+      width: auto;
+    }
+    p {
+      padding: $standard-padding;
+      padding-bottom: 0;
+    }
+    button {
+      margin-top: $standard-padding;
+    }
+  }

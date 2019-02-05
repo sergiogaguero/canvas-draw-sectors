@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{ 'config.apis.api' | translate }}
+    <mat-icon>&#xE315;</mat-icon>
+    <span>{{ 'config.apis.revokeToken' | translate }}</span>
+</h1>
+<div mat-dialog-content>
+    {{ 'config.apis.revokeTokenConfirmation' | translate:data }}
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-raised-button (click)="onNoClick()" tabindex="-1">{{ 'general.cancel' | translate | uppercase}}</button>
+    <button mat-raised-button color="accent" [mat-dialog-close]="data" tabindex="2">{{ 'general.delete' | translate | uppercase}}</button>
+</div>

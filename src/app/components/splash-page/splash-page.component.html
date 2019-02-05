@@ -1,0 +1,143 @@
+<div class="subHeader" id="Breadcrumb">
+    <div class="left">
+        <h3>
+            {{'config.splash-page.title' | translate}}
+        </h3>
+    </div>
+    <div class="right">
+        <span>{{ 'config.splash-page.viewMode'| translate }}</span>
+        <button mat-icon-button title="{{ 'config.splash-page.viewModeComputer'| translate }}" (click)="switchViewMode('desktop')"
+            [color]="viewMode.desktop.active ? 'accent' : ''">
+            <mat-icon>desktop_windows</mat-icon>
+        </button>
+        <button mat-icon-button title="{{ 'config.splash-page.viewModeTablet'| translate }}" (click)="switchViewMode('tablet')" [color]="viewMode.tablet.active ? 'accent' : ''">
+            <mat-icon>tablet</mat-icon>
+        </button>
+        <button mat-icon-button title="{{ 'config.splash-page.viewModePhone'| translate }}" (click)="switchViewMode('phone')" [color]="viewMode.phone.active ? 'accent' : ''">
+            <mat-icon>phone_android</mat-icon>
+        </button>
+    </div>
+</div>
+<div #stepperContainer id="stepperContainer">
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+            <ng-template matStepLabel>{{ 'config.splash-page.backgroundTitle' | translate}}</ng-template>
+            <div [ngStyle]="{'background-image': 'url('+ img +')', 'background-color': backgroundColor}" class="backgroundImage" [style.width]="activeViewMode.width"
+                [style.height]="activeViewMode.height">
+                <form [formGroup]="firstFormGroup" class="form">
+                    <mat-form-field>
+                        <input matInput required [formControl]="bgImgCtrl" placeholder="{{ 'config.splash-page.backgroundImage' | translate }}" [(ngModel)]="dataImage.splash.name">
+                        <button mat-raised-button color="primary" (click)="inputFileBackground.click()">{{'general.fileExplorer' | translate | uppercase}}</button>
+                        <input class="hidden" required #inputFileBackground type="file" accept="image/x-png,image/gif,image/jpeg" (change)="fileChangeBackground($event)">
+                        <mat-hint>{{ 'config.splash-page.backgroundImageHint' | translate }}</mat-hint>
+                        <mat-error *ngIf="bgImgCtrl.hasError('required')">
+                            {{'config.splash-page.noBgImageError' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="text" [formControl]="bgColorCtrl" required placeholder="Color de fondo" [(ngModel)]="backgroundColor">
+                        <mat-hint>{{ 'config.splash-page.colorHint' | translate }}</mat-hint>
+                        <mat-error *ngIf="bgColorCtrl.hasError('required') && !bgColorCtrl.hasError('pattern')">
+                            {{'config.splash-page.noColorError' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="bgColorCtrl.hasError('pattern') && !bgColorCtrl.hasError('required')">
+                            {{'config.splash-page.invalidColorError' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <div>
+                        <button mat-raised-button matStepperNext color="accent" [disabled]='!firstFormGroup.valid'>{{ 'general.continue' | translate | uppercase }}</button>
+                    </div>
+                </form>
+            </div>
+        </mat-step>
+
+        <mat-step [stepControl]="secondFormGroup" class="stepTwo" linear>
+            <ng-template matStepLabel>{{ 'config.splash-page.logoTitle' | translate }}</ng-template>
+            <div [ngStyle]="{'background-image': 'url('+img+')'}" class="backgroundImage" [style.width]="activeViewMode.width" [style.height]="activeViewMode.height">
+                <img *ngIf="logo !== ''" [src]="logo" class="styleLogo">
+                <form [formGroup]="secondFormGroup" class="form">
+                    <mat-form-field>
+                        <input matInput required formControlName="LogoCtrl" placeholder="{{ 'config.splash-page.logoImage' | translate }}" [(ngModel)]="dataLogo.splash.name">
+                        <button mat-raised-button color="primary" (click)="inputFileLogo.click()">
+                            {{'general.fileExplorer' | translate | uppercase}}
+                        </button>
+                        <input class="hidden" required #inputFileLogo type="file" accept="image/x-png,image/gif,image/jpeg" (change)="fileChangeLogo($event)">
+                        <mat-hint>
+                            {{ 'config.splash-page.backgroundImageHint' | translate }}
+                        </mat-hint>
+                        <mat-error *ngIf="logoImgCtrl.hasError('required')">
+                            {{ 'config.splash-page.noLogoImageError' | translate }}
+                        </mat-error>
+                    </mat-form-field>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            {{ 'general.back' | translate | uppercase }}
+                        </button>
+                        <button mat-raised-button color="accent" matStepperNext [disabled]="!secondFormGroup.valid">
+                            {{ 'general.continue' | translate | uppercase }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>{{'config.splash-page.welcomeTitle'| translate}}</ng-template>
+            <div [ngStyle]="{'background-image': 'url('+img+')'}" class="backgroundImage" [style.width]="activeViewMode.width" [style.height]="activeViewMode.height">
+                <img [src]="logo" class="styleLogo">
+                <div *ngIf="message !== undefined" class="text">
+                    <div [innerHTML]="message | safeHtml"></div>
+                </div>
+                <div class="form" *ngIf="!finished">
+                    <div class="editor" *ngIf="hideEditorText">
+                        <p-editor [(ngModel)]="message" [style]="{'height':'150px'}">
+                            <p-header>
+                                <span class="ql-formats">
+                                    <select class="ql-size">
+                                    </select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-bold" aria-label="Bold"></button>
+                                    <button class="ql-italic" aria-label="Italic"></button>
+                                    <button class="ql-underline" aria-label="Underline"></button>
+                                    <button class="ql-strike" aria-label="Strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select title="Text Color" class="ql-color" defaultValue="rgb(0, 0, 0)">
+                                    </select>
+                                    <span class="ql-format-separator"></span>
+                                    <select title="Background Color" class="ql-background" defaultValue="rgb(255, 255, 255)">
+                                    </select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-bullet" value="bullet"></button>
+                                    <select title="Text Alignment" class="ql-align">
+                                        <option selected>Gauche</option>
+                                        <option value="center" label="Center"></option>
+                                        <option value="right" label="Right"></option>
+                                        <option value="justify" label="Justify"></option>
+                                    </select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button aria-label="Link" class="ql-link"></button>
+                                </span>
+                            </p-header>
+                        </p-editor>
+                    </div>
+                    <div id="finalizar">
+                        <button mat-raised-button matStepperPrevious *ngIf="hideEditorText">
+                            {{ 'general.back' | translate | uppercase }}
+                        </button>
+                        <button mat-raised-button (click)="postText()" color="accent" *ngIf="hideEditorText" [disabled]="message === undefined">
+                            {{ 'general.continue' | translate | uppercase}}
+                        </button>
+                        <button id="save" mat-raised-button (click)="saveSplashPage()" color="accent" *ngIf="!hideEditorText">
+                            {{ 'general.save' | translate | uppercase}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

@@ -1,0 +1,15 @@
+@import "../../../paleta_ocp.scss";
+
+hr {
+    margin-top: $small-padding;
+}
+.forgotPw{
+    :hover{
+        font-weight: 900;
+        -webkit-transition: font-weight 1s; /* Safari */
+        transition: font-weight 1s;
+    }
+    font-size:13px;
+    text-align: center;
+    margin-top: $small-padding;
+}

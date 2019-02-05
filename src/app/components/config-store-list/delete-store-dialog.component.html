@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>
+    {{'general.store' | translate }}
+    <mat-icon>&#xE315;</mat-icon>
+    <span>
+        {{'config.store.list.deleteStore' | translate }}</span>
+</h1>
+<div mat-dialog-content>
+    <p *ngIf="data.floors.length">{{'config.store.list.deleteStoreWithFloors' | translate:data}}</p>
+    <p *ngIf="!data.floors.length">{{'config.store.list.deleteStoreWithNoFloors' | translate:data}}</p>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()" tabindex="-1">
+        {{'general.cancel' | translate | uppercase}}</button>
+    <button *ngIf="!data.floors.length" mat-button [mat-dialog-close]="data" tabindex="2">
+        {{'general.delete' | translate | uppercase}}</button>
+    <button *ngIf="data.floors.length" mat-button (click)="onNoClick()" [routerLink]="['settings', 'stores', data.storeId]" tabindex="2">{{'config.store.list.seeFloors' | translate | uppercase}}</button>
+</div>

@@ -1,0 +1,127 @@
+<!--Breadcrumbs-->
+<div class="subHeader">
+  <div class="left">
+    <h3>
+      <a [routerLink]="['/settings/stores']">{{'general.stores' | translate}}</a>
+    </h3>
+    <span>-</span>
+    <span>{{'config.store.edit.editStore' | translate}}</span>
+  </div>
+</div>
+
+<!-- Body -->
+<form (ngSubmit)="saveStore()" novalidate="novalidate">
+  <mat-grid-list cols="3" gutterSize="24px" rowHeight="1:2" class="containerNuevaTienda">
+
+    <!-- FIRST COLUMN -->
+    <mat-grid-tile [colspan]="1">
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="{{'config.store.idPlaceholder' | translate}}" [(ngModel)]="store.idinCustomerDB" name="idinCustomerDB"
+            [formControl]="idFormControl" required>
+          <mat-error *ngIf="idFormControl.hasError('required') && !idFormControl.hasError('idTaken')">
+            {{'config.store.noIdError' | translate}}
+          </mat-error>
+          <mat-error *ngIf="idFormControl.hasError('idTaken') && !idFormControl.hasError('required')">
+            {{'config.store.usedIdError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="{{'config.store.namePlaceholder' | translate}}" [(ngModel)]="store.name" name="name" [formControl]="nameFormControl"
+            required>
+          <mat-error *ngIf="nameFormControl.hasError('required')">
+            {{'config.store.noNameError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select required [(ngModel)]="store.responsableId" name="responsableId" placeholder="{{'general.responsable' | translate}}"
+            [formControl]="responsableFormControl">
+            <mat-option value="" disabled>{{'config.store.responsableDefault' | translate}}</mat-option>
+            <mat-option *ngFor="let empleado of empleados" [value]="empleado.accountId">{{empleado.name}} {{empleado.lastname}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="responsableFormControl.hasError('required')">
+            {{'config.store.noResponsableError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select required [(ngModel)]="store.regionId" name="regionId" placeholder="{{'general.region' | translate}}" [formControl]="regionFormControl">
+            <mat-option value="" disabled>{{'config.store.regionDefault' | translate}}</mat-option>
+            <mat-option *ngFor="let region of regiones" [value]="region.regionId">{{region.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="regionFormControl.hasError('required')">
+            {{'config.store.noRegionError' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <input type="number" hidden required [ngModel]="store.locationLat" [formControl]="latitudeFormControl">
+        <input type="number" hidden required [ngModel]="store.locationLong" [formControl]="longitudeFormControl">
+
+        <div class="cantidadPisos">
+          {{'general.floors' | translate}}
+        </div>
+        <!-- Loop Pisos -->
+        <mat-list>
+          <mat-list-item *ngFor="let piso of pisos">
+            <div class="floorName">
+              {{piso.name}}
+            </div>
+            <div class="buttons">
+              <button mat-icon-button type="button" (click)="openEditFloorDialog(piso.floorId, piso.name)">
+                <mat-icon>mode_edit</mat-icon>
+              </button>
+              <button mat-icon-button type="button" [routerLink]="['floors' , piso.floorId]">
+                <mat-icon>map</mat-icon>
+              </button>
+              <button mat-icon-button type="button" (click)="openDeleteFloorDialog(piso)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+
+        <div class="agregarPisos">
+          <button mat-raised-button color="accent" type="button" (click)="newFloorFormToggle()">
+            {{'config.store.edit.addFloor' | translate | uppercase}}
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+
+        <!-- Agrega el piso -->
+        <div class="nuevoPiso" *ngIf="mostrarNuevoPiso">
+          <form (ngSubmit)="nuevoPiso()" novalidate="novalidate" [formGroup]="addFloor">
+            <div class="containerNuevoPiso">
+              <mat-form-field>
+                <input matInput required placeholder="{{'config.store.edit.floorName' | translate}}" [formControl]="floorNameFormControl" [(ngModel)]="newFloor.name">
+                <mat-error *ngIf="floorNameFormControl.hasError('required')">
+                  {{'config.store.edit.noFloorName' | translate}}
+                </mat-error>
+              </mat-form-field>
+              <button mat-icon-button type="submit">
+                <mat-icon>save</mat-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+
+    <!-- Second column -->
+    <mat-grid-tile [colspan]="2" class="mapa">
+      <div>
+        <mat-form-field class="searchInput">
+          <input matInput [(ngModel)]="store.address" name="search" placeholder="{{'config.store.addressPlaceholder' | translate}}" autocorrect="off" autocapitalize="off" spellcheck="off" #search>
+          <mat-error *ngIf="latitudeFormControl.hasError('required') || longitudeFormControl.hasError('required')">
+            {{'config.store.noAddressError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+          <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+        </agm-map>
+        <div class="botonGuardar right-align">
+          <button mat-raised-button color="accent" type="submit">{{'general.save' | translate | uppercase }}</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

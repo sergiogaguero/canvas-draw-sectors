@@ -1,0 +1,52 @@
+<div class="subHeader" id="Breadcrumb">
+    <div class="left">
+        <h3>{{'config.user.users' | translate}}</h3>
+        <span>-</span>
+        <span>{{'config.user.listUsersExist' | translate}}</span>
+    </div>
+    <div class="right">
+        <button mat-raised-button color="accent" (click)="openNewUserDialog()">
+            <mat-icon>person_add</mat-icon>
+            {{'config.user.newUser' | translate | uppercase}}
+        </button>
+    </div>
+</div>
+
+<div class="loading-wrapper" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<mat-table #table [dataSource]="dataSource" *ngIf="!loading">
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>{{'general.name' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="person">
+            <img src="./assets/images/avatar_profile.png" alt="">
+            <div class="info">{{element.name}} {{element.lastname}}</div>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+        <mat-header-cell *matHeaderCellDef> {{'config.user.role' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.role.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef> {{'config.user.email' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.user.email}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> {{'general.actions' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="openNewUserDialog(element)" title="{{'icons.edit' | translate}}">
+                <mat-icon>mode_edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="openDeleteUserDialog(element)" title="{{'icons.delete' | translate}}">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

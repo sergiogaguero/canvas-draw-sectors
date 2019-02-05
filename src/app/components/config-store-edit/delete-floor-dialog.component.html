@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>
+    {{'general.floor' | translate}}
+    <mat-icon>&#xE315;</mat-icon>
+    <span>
+        {{'config.store.edit.deleteFloor' | translate}}
+    </span>
+</h1>
+<div mat-dialog-content>
+    <p>
+        {{'config.store.edit.alertDeleteFloor' | translate:data}}
+    </p>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()" tabindex="-1">{{'general.cancel' | translate | uppercase}}</button>
+    <button mat-raised-button color="accent" [mat-dialog-close]="data" tabindex="2">{{'general.delete' | translate | uppercase}}</button>
+</div>

@@ -1,0 +1,73 @@
+<div class="subHeader" id="Breadcrumb">
+    <div class="left">
+        <h3>{{'config.general.globalParameters'| translate}}</h3>
+    </div>
+</div>
+
+<h2>{{'config.general.title'| translate}}</h2>
+
+<div class="settings-flex">
+    <h3 class="title">{{'store-operations.quantityOfVisitors' | translate}}</h3>
+    <p class="description">{{'config.general.visitorsDetail' | translate}}</p>
+    <div class="form-item" id="visitsTime">
+        <mat-slider thumbLabel step="1" [max]="GENERAL_SETTINGS.VISITORS_TIME_MAX" [(ngModel)]="settings.visits" [min]="1"></mat-slider>
+        <p>{{settings.visits}} {{'general.minutes'| translate}}</p>
+    </div>
+</div>
+<div class="settings-flex">
+    <h3 class="title">{{'config.general.passersBy' | translate}}</h3>
+    <p class="description">{{'config.general.passersByDetail' | translate}}</p>
+    <div class="form-item">
+        <mat-slider thumbLabel step="10" [max]="settings.visits * 60" [(ngModel)]="settings.passByBegin" [min]="10"></mat-slider>
+        <p>{{settings.passByBegin}} {{'general.seconds'| translate}}</p>
+    </div>
+</div>
+<div class="settings-flex">
+    <h3 class="title">{{'config.general.knownPeriod' | translate}}</h3>
+    <p class="description">{{'config.general.knownPeriodDetail' | translate}}</p>
+    <div class="form-item">
+        <mat-form-field>
+            <mat-select [(ngModel)]="settings.knownPeriod" placeholder="{{'config.general.knownPeriod' | translate}}">
+                <mat-option *ngFor="let period of GENERAL_SETTINGS.KNOWN_VISITOR_PERIODS" [value]="period.dbValue">
+                    {{period.translation | translate}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+</div>
+<div class="settings-flex">
+    <h3 class="title">{{'config.general.ratio' | translate}}</h3>
+    <div class="description">
+        <p> {{'config.general.ratioDetail.paragraph1' | translate}}</p>
+        <p> {{'config.general.ratioDetail.paragraph2' | translate}}</p>
+        <p> {{'config.general.ratioDetail.paragraph3' | translate}}</p>
+        <p> {{'config.general.ratioDetail.paragraph4' | translate}}</p>
+        <p> {{'config.general.ratioDetail.paragraph5' | translate}}</p>
+    </div>
+    <div class="form-item">
+        <mat-slider thumbLabel step="1" [max]="GENERAL_SETTINGS.RATIO_MAX_PERCENTAGE" [(ngModel)]="settings.ratio" [min]="0"></mat-slider>
+        <p>{{settings.ratio}} %</p>
+    </div>
+</div>
+
+<h2 class="devicesToDiscardTitle">{{'config.general.devicesToDiscardTitle'| translate}}</h2>
+<h3 class="devices">{{'config.general.meraki'| translate}}</h3>
+<div class="settings-flex">
+    <h3 class="title">{{'config.general.devicesToDiscard' | translate}}</h3>
+
+    <p class="description">{{'config.general.devicesToDiscardDetail' | translate}}</p>
+    <div class="form-item">
+        <mat-form-field>
+            <mat-select [(ngModel)]="settings.discarded" placeholder="{{'config.general.devicesToDiscard' | translate}}">
+                <mat-option *ngFor="let sighting of GENERAL_SETTINGS.DEVICE_DISCARD_SIGHTINGS" [value]="sighting">
+                    {{sighting}} {{'config.general.sightings' | translate}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<div id="save">
+    <button mat-raised-button color="accent" (click)="openSavingDialog()">{{'general.save' | translate | uppercase}}</button>
+</div>

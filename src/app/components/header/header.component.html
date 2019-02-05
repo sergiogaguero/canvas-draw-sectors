@@ -1,0 +1,44 @@
+<header *ngIf="authService.isUserLoggedIn()">
+
+  <div class="divider-v"></div>
+
+  <div class="user-profile">
+    <img src="./assets/images/avatar_profile.png" alt="Avatar">
+    <div class="user">
+      <div class="name">{{usuario?.name}} {{usuario?.lastname}}</div>
+      <div class="role">{{usuario?.role?.name}}</div>
+    </div>
+  </div>
+  <button id="logout" mat-icon-button (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
+
+  <div class="divider-v"></div>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>settings</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <mat-panel-title>
+      <div>
+        <mat-icon id="setting">settings_applications</mat-icon>{{'side-nav.configuration' | translate | uppercase}}
+      </div>
+      <mat-icon id="clear" (click)="closeMenu()">clear</mat-icon>
+    </mat-panel-title>
+    <hr>
+    <div class="language">
+      <mat-icon>language</mat-icon>
+      <span>
+        {{'general.language' | translate}}
+        <br>
+        <small>{{'general.selectLanguage' | translate}}</small>
+      </span>
+    </div>
+    <div class="radio">
+      <mat-radio-group>
+        <mat-radio-button *ngFor="let lang of languages" [value]='lang.key' [checked]="langKey==lang.key" (change)="changeUserLang(lang)">{{lang.key}}</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </mat-menu>
+
+</header>

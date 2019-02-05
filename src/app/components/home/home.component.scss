@@ -1,0 +1,71 @@
+@import "../../../paleta_ocp.scss";
+
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+        display: block;
+        font-size: 0.7em;
+    }
+    img {
+        max-height: 100px;
+    }
+}
+
+.mat-grid-tile{
+    div {
+        display: flex;
+        align-items: flex-start;
+        height: 100%;
+        .mat-card {
+            background: $dark-blue;
+            color: $white;
+            text-align: center;
+            position: relative;
+            padding: $standard-padding;
+            .mat-icon {
+                font-size: 6em;
+                width: 1em;
+                height: 1em;
+                padding: $standard-padding 0;
+            }
+            .mat-card-content {
+                h3 {
+                    text-transform: uppercase;
+                    margin-bottom: $small-padding;
+                }
+            }
+            .mat-card-actions {
+                margin: 0;
+                button {
+                    width: 100%;
+                }
+            }
+            * {
+                z-index: 2;
+                position: relative;
+            }
+        }
+    }
+}
+.mat-card:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    display: block;
+    border-radius: $standard-radius;
+    z-index: 1;
+}
+.mat-grid-tile:nth-of-type(2) .mat-card:before {
+    background: rgba(red($cyan),green($cyan), blue($cyan), 0.33);
+}
+.mat-grid-tile:nth-of-type(3) .mat-card:before {
+    background: rgba(red($cyan),green($cyan), blue($cyan), 0.66);
+}
+.mat-grid-tile:nth-of-type(4) .mat-card:before {
+    background: $cyan;
+}

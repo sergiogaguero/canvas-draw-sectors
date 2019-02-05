@@ -1,0 +1,125 @@
+@import "../../../paleta_ocp.scss";
+@import "../../styles/greyBar.style.scss";
+
+.wrapper {
+    background: $white;
+    padding: $standard-padding;
+    border-radius: 4px;
+}
+
+#containerImage{
+  position: relative;
+}
+
+#selectFloorOnMap{
+  position: absolute;
+  top: $small-padding;
+  right: $small-padding;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: $small-padding $small-padding 0 $small-padding;
+  border-radius: $standard-radius;
+  opacity: 0.7;
+  transition-duration: 0.5s;
+}
+
+#selectFloorOnMap:hover{
+  opacity: 1;
+  transition-duration: 0.5s;
+}
+
+
+
+#selectFloorOnMap{
+  z-index: 20;
+  text-align: right;
+}
+
+select {
+    display: initial;
+}
+
+.floors{
+  display: inline-block;
+  margin-left: 15px;
+}
+
+#loading{
+  padding: 200px 0;
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep.mat-figure > div {
+  width: 100%;
+  .item {
+    overflow: hidden;
+    border-radius: $standard-radius;
+    background-color: $bg-body;
+    margin-bottom: $small-padding;
+    padding: $small-padding;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    min-height: 80px;
+    position: relative;
+    .backgroundIcon {
+      opacity: 0.1;
+      font-size: 9em;
+      position: absolute;
+      bottom: -0.25em;
+      left: -0.2em;
+      width: 1em;
+      height: 1em;
+    }
+    h6 {
+      margin: 0;
+      padding: 0;
+      flex-grow: 1;
+      font-size: 0.9em;
+      font-weight: normal;
+    }
+    .metric{
+      font-size: 1.5em;
+    }
+    .typeMetric{
+      font-size: 0.7em;
+    }
+    .arrow_drop_down{
+      bottom: -5px;
+      font-size: 2.5em;
+      color: $error;
+      width: 1em;
+    }
+    .arrow_drop_up{
+      bottom: -5px;
+      font-size: 2.5em;
+      color: $success;
+      width: 1em;
+    }
+  }
+}
+
+#plan-title{
+  font-weight: bold;
+  color: #00008B;
+}
+
+.mat-grid-tile ::ng-deep.mat-figure {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+img#map{
+  width: 100%;
+  border-radius: $standard-radius;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.alignRightDate {
+  text-align: right;
+}

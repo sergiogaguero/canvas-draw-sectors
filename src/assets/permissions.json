@@ -1,0 +1,75 @@
+[
+    {
+        "role": "Admin",
+        "routes": [
+            "/confirmar",
+            "/reestablecer",
+            "/restaurar",
+            "/login",
+            "/salesforce",
+            "/store-customer",
+            "/reports",
+            "/reports/visitors",
+            "/settings",
+            "/settings/stores",
+            "/settings/stores/add",
+            "/settings/stores/:id",
+            "/settings/stores/:id/floors/:id",
+            "/settings/regions",
+            "/settings/usuarios",
+            "/settings/apis",
+            "/settings/general",
+            "/settings/status",
+            "/settings/splash-page",
+            "/globalUsers/id",
+            "/store-chain-operations",
+            "/store-operations",
+            "/forbidden",
+            "/home",
+            "/error-handling"
+        ]
+    },
+    {
+        "role": "GteTienda",
+        "routes": [
+            "/confirmar",
+            "/reestablecer",
+            "/restaurar",
+            "/login",
+            "/salesforce",
+            "/reports",
+            "/reports/visitors",
+            "/store-operations",
+            "/store-customer",
+            "/forbidden",
+            "/home",
+            "/error-handling"
+        ]
+    },
+    {
+        "role": "GteRed",
+        "routes": [
+            "/confirmar",
+            "/reestablecer",
+            "/restaurar",
+            "/login",
+            "/store-customer",
+            "/reports",
+            "/reports/visitors",
+            "/salesforce",
+            "/store-operations",
+            "/store-chain-operations",
+            "/forbidden",
+            "/home",
+            "/error-handling"
+        ]
+    },
+    {
+        "role": "Vendedor",
+        "routes": [
+            "/home",
+            "/forbidden",
+            "/error-handling"
+        ]
+    }
+]

@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>
+    {{'general.floors' | translate}}
+    <mat-icon>&#xE315;</mat-icon>
+    <span>{{'config.store.edit.editFloor' | translate}}</span>
+</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+        <input matInput required [(ngModel)]="data.name" placeholder="{{'config.store.edit.floorName' | translate}}" [formControl]="floorNameFormControl">
+        <mat-error *ngIf="floorNameFormControl.hasError('required')">
+            {{'config.store.edit.noFloorName' | translate}}
+        </mat-error>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()" tabindex="-1">{{'general.cancel' | translate | uppercase}} </button>
+    <button mat-raised-button color="accent" (click)="saveFloor()" tabindex="2">{{'general.save' | translate | uppercase}} </button>
+</div>

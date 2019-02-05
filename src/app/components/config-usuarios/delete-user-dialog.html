@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{'config.user.users' | translate}}
+  <mat-icon>keyboard_arrow_right</mat-icon>
+  <span class="sub-title">{{'config.user.deleteUser' | translate }}</span>
+</h1>
+
+<div mat-dialog-content>
+  <span>{{'config.user.alertDeleteUser' | translate }}</span>
+  <span>{{data.name}} {{data.lastname}}</span>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()" tabindex="-1">{{'general.cancel' | translate | uppercase}}</button>
+  <button mat-button [mat-dialog-close]="data" tabindex="2" (click)="deleteUser()">{{'general.delete' | translate | uppercase}}</button>
+</div>

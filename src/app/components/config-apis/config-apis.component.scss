@@ -1,0 +1,39 @@
+@import "../../../paleta_ocp.scss";
+.mat-column-token {
+    flex-grow: 4;
+}
+
+.mat-header-cell, .mat-cell {
+    text-align: center;
+}
+
+.mat-cell.mat-column-label {
+    font-weight: bold;
+    color: $cyan;
+}
+
+.mat-cell.mat-column-token {
+    font-weight: bold;
+}
+
+.mat-cell.mat-column-active {
+    opacity: 0.7;
+}
+
+
+//DIALOG CSS
+.mat-form-field {
+    width: 100%;
+}
+
+.mat-dialog-actions {
+    text-align: right;
+}
+
+//FIX BECAUSE MATERIALIZE SUCKS
+input:not([type]), input:not([type]):focus:not([readonly]) {
+    margin: 0;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+    height: auto;
+}

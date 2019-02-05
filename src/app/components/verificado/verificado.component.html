@@ -1,0 +1,27 @@
+<div class="background">
+  <div class="center-column">
+    <a [routerLink]="['']" class="logo">
+      <img class="imgIsoLogo" src="./assets/images/OCP-logo_login.png" alt="OCP">
+    </a>
+
+    <div *ngIf="!error" class="message success">
+      <p>{{'verified.verified' | translate}}</p>
+      <p>{{'verified.welcome' | translate}}</p>
+    </div>
+
+    <div *ngIf="error" class="message error">
+      <p>{{'verified.error' | translate}}</p>
+      <p>{{'verified.tryAgain' | translate}}</p>
+    </div>
+
+    <div class="loginContainer">
+      <button mat-raised-button color="accent" [routerLink]="['']">{{'verified.login' | translate | uppercase }}</button>
+    </div>
+
+    <div class="derechos">
+      <span> {{'general.copyright' | translate}}</span>
+      <span>{{'general.rightsReserved' | translate }}</span>
+    </div>
+
+  </div>
+</div>

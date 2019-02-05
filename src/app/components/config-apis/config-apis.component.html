@@ -1,0 +1,52 @@
+<div class="subHeader" id="Breadcrumb">
+    <div class="left">
+        <h3>{{ 'config.apis.title' | translate }}</h3>
+        <span>-</span>
+        <span>{{ 'config.apis.subtitle' | translate }}</span>
+    </div>
+    <div class="right">
+        <button mat-raised-button color="accent" (click)="newTokenDialog()">
+            <mat-icon>&#xE8B9;</mat-icon>
+            <span>{{ 'config.apis.addToken' | translate | uppercase}}</span>
+        </button>
+    </div>
+</div>
+
+<mat-table #table [dataSource]="dataSource" *ngIf="tokens.length > 0">
+
+    <ng-container matColumnDef="apiTypeId">
+        <mat-header-cell *matHeaderCellDef>{{ 'config.apis.api' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.apiType.description}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="label">
+        <mat-header-cell *matHeaderCellDef> {{ 'config.apis.label' | translate }} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.label}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="token">
+        <mat-header-cell *matHeaderCellDef> {{ 'config.apis.token' | translate }} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.token}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="active">
+        <mat-header-cell *matHeaderCellDef> {{ 'config.apis.revoke' | translate }} </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="deleteTokenDialog(element)" title="{{ 'config.apis.revokeToken' | translate }}">
+                <mat-icon>&#xE872;</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<div class="errorWrapper" *ngIf="tokens.length == 0">
+    <mat-icon>warning</mat-icon>
+    <h3>{{'config.apis.noTokensErrorTitle' | translate}}</h3>
+    <p>{{'config.apis.noTokensError' | translate}}</p>
+    <button (click)="newTokenDialog()" mat-raised-button color="accent">
+        <mat-icon>vpn_key</mat-icon> {{'config.apis.addToken' | translate | uppercase}}
+    </button>
+</div>

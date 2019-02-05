@@ -1,0 +1,91 @@
+@import "../../../paleta_ocp.scss";
+
+agm-map {
+    height: 300px;
+}
+
+.containerNuevaTienda{
+    mat-grid-tile {
+        div {
+            width: 100%;
+            vertical-align: top;
+            align-self: flex-start;
+        }
+    }
+    .mat-form-field {
+        width: 100%;
+    }
+    .agregarPisos{
+        button {
+            width:100%;
+        }
+    }
+    .cantidadPisos{
+        color:#9e9e9e;
+        margin-bottom:10px;
+    }
+
+    mat-list {
+        max-height: 250px;
+        overflow: auto;
+        .floorName {
+            color: $cyan;
+            font-weight: bold;
+            align-self: center;
+        }
+        .buttons {
+            text-align: right;
+        }
+        .mat-list-item:first {
+            border-top:1px solid #cccacb;
+        }
+        .mat-list-item {
+            display: flex;
+            align-items: center;
+            border-bottom:1px solid #cccacb;
+            height: auto;
+            ::ng-deep.mat-list-item-content {
+                width: 100%;
+                padding: 5px 15px;
+            }
+        }
+    }
+    .containerNuevoPiso{
+        display:flex;
+        padding:10px 14px;
+        background: $gris-2;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-radius: 0 0 4px 4px;
+        .mat-form-field {
+            width: 100%;
+        }
+    }
+    .mapa{
+        .searchInput{
+            margin-bottom: 10px;
+        }
+        .botonGuardar{
+            margin:10px 0;
+            padding-bottom:15px;
+            button:not(:last-of-type){
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+// Edit Floor Dialog styling
+.mat-form-field {
+    width: 100%;
+}

@@ -1,0 +1,166 @@
+<main>
+  <h1>{{'store-operations.storeOperations' | translate}}</h1>
+  <article class="wrapper">
+    <div class="grey-bar">
+      <div id="store-info">
+
+        <mat-form-field *ngIf="roleName == roles.admin && regions.length > 0">
+          <mat-select [(ngModel)]="selectedRegion" #selectRegion (change)="selectCurrentRegion()" placeholder="{{ 'general.regions' | translate}}">
+            <mat-option *ngFor="let region of regions" [value]="region.regionId">
+              {{region.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <h2 *ngIf="(roleName == roles.regionMgr || roleName == roles.storeMgr ) && regions.length > 0">{{regions[0]?.name}}:</h2>
+        <h3 *ngIf="roleName == roles.storeMgr">{{stores[0]?.name}}</h3>
+
+        <mat-form-field *ngIf="roleName == roles.regionMgr && stores.length > 0 || roleName == roles.admin && stores.length > 0">
+          <mat-select [(ngModel)]="selectedStore" #selectStore (change)="selectCurrentStore()" placeholder="{{ 'general.stores' | translate}}">
+            <mat-option *ngFor="let store of stores" [value]="store.storeId">
+              {{store.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+      <div class="alignRight">
+        <mat-form-field class="example-full-width">
+          <input class="alignRightDate" matInput [max]="maxDate" [matDatepicker]="picker" [(ngModel)]="dateDefault" (change)="updateKpis()"
+            (dateChange)="updateKpis()" placeholder="{{ 'general.dateDefault' | translate}}">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="loading" id="loading">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div *ngIf="noStoreError && !loading" class="errorWrapper">
+        <mat-icon>warning</mat-icon>
+        <p>{{'store-operations.noStoreError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/stores/add']" [routerLink]="['/settings/stores/add']" mat-raised-button color="accent">
+          <mat-icon>store</mat-icon> {{'config.store.add.addStore' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/stores/add']">
+          {{'errors.contactAdmin' | translate}}
+        </div>
+      </div>
+      <div *ngIf="noFloorsError && !loading" class="errorWrapper">
+        <mat-icon>warning</mat-icon>
+        <p> {{'store-operations.noFloorsErrorTitle' | translate}} </p>
+        <p>{{'store-operations.noFloorsError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/stores/:id']" [routerLink]="['/settings/stores/', selectedStore]" mat-raised-button
+          color="accent">
+          <mat-icon>layers</mat-icon> {{'config.store.edit.addFloor' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/stores/:id']">
+          {{'errors.contactAdmin' | translate}}
+        </div>
+      </div>
+      <div *ngIf="noRegionError && !loading" class="errorWrapper">
+        <mat-icon>warning</mat-icon>
+        <p>{{'store-operations.noRegionError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/regions']" [routerLink]="['/settings/regions/']" mat-raised-button color="accent">
+          <mat-icon>place</mat-icon> {{'config.regions.addRegion' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/regions']">
+          {{'errors.contactAdmin' | translate}}
+        </div>
+      </div>
+
+      <mat-grid-list *ngIf="!loading && !noStoreError && !noFloorsError && !noRegionError" cols="6" gutterSize="24px" [rowHeight]="mapHeight">
+        <mat-grid-tile colspan="5">
+          <div id="containerImage">
+
+            <mat-form-field *ngIf="floors?.length != 0" id="selectFloorOnMap">
+              <mat-select #selectFloor [(ngModel)]="selectedFloor" (change)="selectCurrentFloor(selectFloor.value)" placeholder="{{ 'general.floors' | translate}}">
+                <mat-option *ngFor="let floor of floors" [value]="floor">
+                  {{floor.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <img *ngIf="urlMap != '' && urlMap != null" [src]="urlMap" #imgPlano (load)="updateRowHeight()" alt="{{'store-operations.noMapImageError' | translate}}"
+              class="responsive-img" id="map">
+            <div class="errorWrapper" *ngIf="urlMap == '' && floors?.length && (selectedFloor?.maps?.length == 0 || selectedFloor?.maps === undefined) && !loading">
+              <mat-icon>warning</mat-icon>
+              <h3>{{'store-operations.noMapErrorTitle' | translate}}</h3>
+              <p>{{'store-operations.noMapError' | translate}}</p>
+              <button *ngIf="menuVisibility['/settings/stores/:id/floors/:id']" [routerLink]="['/settings/stores/', selectedStore, 'floors', selectedFloor.floorId]"
+                mat-raised-button color="accent">
+                <mat-icon>map</mat-icon> {{'config.store.edit.floor.addMap' | translate | uppercase}}</button>
+              <div *ngIf="!menuVisibility['/settings/stores/:id/floors/:id']">
+                {{'errors.contactAdmin' | translate}}
+              </div>
+            </div>
+            <div class="errorWrapper" *ngIf="urlMap == '' && floors?.length && selectedFloor?.maps?.length > 0 && !loading">
+              <mat-icon>warning</mat-icon>
+              <h3>{{'store-operations.noActiveMapErrorTitle' | translate}}</h3>
+              <p>{{'store-operations.noActiveMapError' | translate}}</p>
+              <button *ngIf="menuVisibility['/settings/stores/:id/floors/:id']" [routerLink]="['/settings/stores/', selectedStore, 'floors', selectedFloor.floorId]"
+                mat-raised-button color="accent">
+                <mat-icon>map</mat-icon> {{'store-operations.seeMaps' | translate | uppercase}}</button>
+              <div *ngIf="!menuVisibility['/settings/stores/:id/floors/:id']">
+                {{'errors.contactAdmin' | translate}}
+              </div>
+            </div>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" class="kpis">
+          <div #kpis>
+            <div class="item">
+              <mat-icon class="backgroundIcon">face</mat-icon>
+              <h6>{{'store-operations.quantityOfVisitors' | translate | uppercase}}</h6>
+              <div *ngIf="behaviour?.visits > 0">
+                <mat-icon *ngFor="let n of behaviour.visitsArray" class="arrow_drop_up">arrow_drop_up</mat-icon>
+              </div>
+              <div *ngIf="behaviour?.visits < 0">
+                <mat-icon *ngFor="let n of behaviour.visitsArray" class="arrow_drop_down">arrow_drop_down</mat-icon>
+              </div>
+              <mat-icon *ngIf="behaviour?.visits == 0">drag_handle</mat-icon>
+              <p class="metric">{{visitsPerDay}}</p>
+            </div>
+            <div class="item">
+              <mat-icon class="backgroundIcon">av_timer</mat-icon>
+              <h6>{{'store-operations.averageTime' | translate | uppercase}}</h6>
+              <div *ngIf="behaviour?.dwellTime > 0">
+                <mat-icon *ngFor="let n of behaviour.dwellTimeArray" class="arrow_drop_up">arrow_drop_up</mat-icon>
+              </div>
+              <div *ngIf="behaviour?.dwellTime < 0">
+                <mat-icon *ngFor="let n of behaviour.dwellTimeArray" class="arrow_drop_down">arrow_drop_down</mat-icon>
+              </div>
+              <mat-icon *ngIf="behaviour?.dwellTime == '0'">drag_handle</mat-icon>
+              <p class="metric">{{averageTime}}</p>
+              <p class="typeMetric">{{'store-operations.minutes' | translate | uppercase}}</p>
+            </div>
+            <div class="item">
+              <mat-icon class="backgroundIcon">card_membership</mat-icon>
+              <h6>{{'store-operations.conversionToBuyers' | translate | uppercase}}</h6>
+              <div *ngIf="behaviour?.conversion > 0">
+                <mat-icon *ngFor="let n of behaviour.conversionArray" class="arrow_drop_up">arrow_drop_up</mat-icon>
+              </div>
+              <div *ngIf="behaviour?.conversion < 0">
+                <mat-icon *ngFor="let n of behaviour.conversionArray" class="arrow_drop_down">arrow_drop_down</mat-icon>
+              </div>
+              <mat-icon *ngIf="behaviour?.conversion == '0'">drag_handle</mat-icon>
+              <p class="metric">{{conversionToBuyers}}%</p>
+            </div>
+            <div class="item">
+              <mat-icon class="backgroundIcon">receipt</mat-icon>
+              <h6>{{'store-operations.averageTicket' | translate | uppercase}}</h6>
+              <div *ngIf="behaviour?.averageTicket > 0">
+                <mat-icon *ngFor="let n of behaviour.averageTicketArray" class="arrow_drop_up">arrow_drop_up</mat-icon>
+              </div>
+              <div *ngIf="behaviour?.averageTicket < 0">
+                <mat-icon *ngFor="let n of behaviour.averageTicketArray" class="arrow_drop_down">arrow_drop_down</mat-icon>
+              </div>
+              <mat-icon *ngIf="behaviour?.averageTicket == '0'">drag_handle</mat-icon>
+              <p class="metric">${{averageTicket}}</p>
+              <p class="typeMetric">{{'store-operations.moneyTicket' | translate | uppercase}}</p>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </article>
+</main>

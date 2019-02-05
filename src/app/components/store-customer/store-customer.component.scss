@@ -1,0 +1,94 @@
+@import "../../../paleta_ocp.scss";
+@import "../../styles/greyBar.style.scss";
+
+.mat-card-header-text{
+  width: 100%;
+}
+
+.wrapper{
+  background: $white;
+  padding: $standard-padding;
+  border-radius: 4px;
+}
+
+.grey-bar{
+  flex-wrap: wrap;
+  #range-picker{
+    .mat-form-field {
+      float: left;
+    }
+  }
+}
+
+
+#selectedPeriod {
+    margin: $standard-padding 0;
+    >span:first-child {
+        color: $cyan;
+        mat-icon {
+            position: relative;
+            bottom: -5px;
+            margin-top: -5px;
+        }
+    }
+}
+
+.mat-card-header {
+  .material-icons {
+    font-size: 16px;
+  }
+}
+
+#captacion {
+  background:url('../../../assets/images/captacion_bg.png') left top no-repeat $cyan;
+}
+#fidelizacion{
+  background:url("../../../assets/images/fidelizacion_bg.png") left top no-repeat $cyan;
+}
+#conversion{
+  background:url("../../../assets/images/conversion_bg.png") left top no-repeat $cyan;
+
+}
+
+
+.card-image {
+  width: 100%;
+  .cockpit {
+    min-width: 340px;
+    width: 100%;
+    mat-card{
+      margin: 20px;
+      min-height: 217px;
+      div{
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        font-size: 70px;
+        margin-top: 16px;
+        span{
+          font-size: 35px;
+        }
+      }
+      div.title {
+        font-size: 16px;
+        font-weight: lighter;
+      }
+    }
+    .mat-card-content{
+      display: flex;
+      justify-content:space-around
+    }
+  }
+}
+
+.tooltip {
+  width: 100%;
+  display: flex;
+  justify-content:space-around;
+}
+
+#loading{
+  padding: 200px 0;
+  display: flex;
+  justify-content: center;
+}

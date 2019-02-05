@@ -1,0 +1,19 @@
+// this code is ONLY meant to be used in material tables
+
+.mat-row {
+    height: 56px;
+}
+
+.person {
+    display: flex;
+    align-items: center;
+    img {
+        width: 40px;
+        border-radius: 50%;
+        margin: 8px;
+    }
+    .info {
+        text-align: right;
+        margin-left: 8px;
+    }
+}

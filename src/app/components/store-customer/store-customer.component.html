@@ -1,0 +1,166 @@
+<main>
+  <h1>{{'store-customer.title' | translate}}</h1>
+  <div class="wrapper">
+    <div *ngIf="!notRegions" class="grey-bar">
+      <div id="store-info">
+        <h2 *ngIf="!canSelectRegion && regiones[0] ">{{regiones[0].name}}: </h2>
+        <span *ngIf="!canSelectRegion && notRegions">{{'store-customer.notRegion' | translate}} </span>
+        <h3 *ngIf="!canSelectStore && selectedStore !== -1">{{regiones[0].stores[0]?.name}}</h3>
+        <mat-form-field *ngIf="canSelectRegion && regiones.length !== 0">
+          <mat-select placeholder="{{ 'general.regions' | translate}}" [(ngModel)]="selectedRegion" (change)="updateRegion()">
+            <mat-option [value]="-1">{{'salesforce.allRegions' | translate}}</mat-option>
+            <mat-option *ngFor="let option of regiones" [value]="option">
+              {{ option?.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="canSelectStore && selectedRegion !== -1 && !notStores">
+          <mat-select placeholder="{{ 'general.stores' | translate}}" [(ngModel)]="selectedStore" (change)="selectCurrentStore()">
+            <mat-option [value]="-1">{{'salesforce.allStores' | translate}}</mat-option>
+            <mat-option *ngFor="let store of selectedRegion.stores" [value]="store.storeId">
+              {{ store.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div id="range-picker">
+        <mat-form-field>
+          <input matInput [matDatepicker]="startingDate" placeholder="{{'salesforce.startingDate' | translate}}" [(ngModel)]="startDate"
+            name="startDate" [max]="endDate" disabled (dateChange)="getCockPit()">
+          <mat-datepicker-toggle matSuffix [for]="startingDate"></mat-datepicker-toggle>
+          <mat-datepicker #startingDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput [matDatepicker]="endingDate" placeholder="{{'salesforce.endingDate' | translate}}" [(ngModel)]="endDate"
+            name="endDate" (dateChange)="getCockPit()" [max]="yesterday" [min]="startDate" disabled>
+          <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+          <mat-datepicker #endingDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div id="selectedPeriod" *ngIf="((startDate!==null && endDate!==null) && !notRegions || (selectedRegion!== -1 && notStores))">
+      <span>
+        <mat-icon>date_range</mat-icon> {{'salesforce.selectedPeriod' | translate}}:
+      </span>
+      <span *ngIf="wholeMonth">{{currentlySelectedPeriod | capitalize}}</span>
+      <span *ngIf="!wholeMonth">{{startDate | date: 'd MMMM y'}} - {{endDate | date: 'd MMMM y'}}</span>
+    </div>
+
+    <div class="errorWrapper" *ngIf="((!canSelectRegion && notStores) || (selectedRegion!== -1 && notStores))">
+      <mat-icon>warning</mat-icon>
+      <p>{{'errors.noStoreError' | translate}}</p>
+      <button *ngIf="menuVisibility['/settings/stores/add']" [routerLink]="['/settings/stores/add']" mat-raised-button color="accent">
+        <mat-icon>store</mat-icon> {{'config.store.add.addStore' | translate | uppercase}}</button>
+      <p *ngIf="!menuVisibility['/settings/regions']">
+        {{'errors.contactAdmin' | translate}}
+      </p>
+    </div>
+    <div *ngIf="!notStores">
+      <div *ngIf="loading" id="loading">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div class="errorWrapper" *ngIf="!contentExist && !loading && !notRegions">
+        <mat-icon>warning</mat-icon>
+        <h2> {{ 'errors.noContentTitleClient360'| translate}} </h2>
+        <p> {{ 'errors.noContentClient360'| translate}} </p>
+      </div>
+      <div *ngIf="noFloorsError && !loading" class="errorWrapper">
+        <mat-icon>warning</mat-icon>
+        <h3> {{'store-operations.noFloorsErrorTitle' | translate}} </h3>
+        <p>{{'store-operations.noFloorsError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/stores/:id']" [routerLink]="['/settings/stores/', selectedStore]" mat-raised-button
+          color="accent">
+          <mat-icon>layers</mat-icon> {{'config.store.edit.addFloor' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/stores/:id']">
+          {{'errors.contactAdmin' | translate}}
+        </div>
+      </div>
+      <div *ngIf="noMapError && !loading" class="errorWrapper">
+        <mat-icon>warning</mat-icon>
+        <h3> {{'store-operations.noMapErrorTitle' | translate}} </h3>
+        <p>{{'errors.noMapError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/stores/:id/floors/:id']" [routerLink]="['/settings/stores', selectedStore]" mat-raised-button
+          color="accent">
+          <mat-icon>map</mat-icon> {{'config.store.edit.floor.addMap' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/stores/:id/floors/:id']">
+          {{'errors.contactAdmin' | translate}}
+        </div>
+      </div>
+
+      <div *ngIf="notRegions && !loading" class="errorWrapper">
+        <mat-icon>warning</mat-icon>
+        <p>{{'errors.noRegionError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/regions']" [routerLink]="['/settings/regions/']" mat-raised-button
+          color="accent">
+          <mat-icon>place</mat-icon> {{'config.regions.addRegion' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/regions']">
+          {{'errors.contactAdmin' | translate}}
+        </div>
+      </div>
+      <div class="errorWrapper" *ngIf="((!canSelectRegion && notStores) || (selectedRegion!== -1 && notStores))">
+        <mat-icon>warning</mat-icon>
+        <p>{{'errors.noStoreError' | translate}} ACA</p>
+        <button *ngIf="menuVisibility['/settings/stores/add']" [routerLink]="['/settings/stores/add']" mat-raised-button color="accent">
+          <mat-icon>store</mat-icon> {{'config.store.add.addStore' | translate | uppercase}}</button>
+        <p *ngIf="!menuVisibility['/settings/regions']">
+          {{'errors.contactAdmin' | translate}}
+        </p>
+      </div>
+      <div class="card-image" *ngIf="!loading && contentExist && !noFloorsError && !noMapError">
+        <mat-grid-list appGridList cols="3">
+          <mat-grid-tile>
+            <div class="cockpit">
+              <mat-card id="captacion">
+                <div class="title">{{'store-customer.cardCatchment' | translate | uppercase}}</div>
+                <div>{{captacion[1] !== '' ? captacion[1] : '00'}},
+                  <sup>{{captacion[2] !== '' ? captacion[2] : '00'}}</sup>
+                  <span>%</span>
+                </div>
+              </mat-card>
+              <div class="tooltip">
+                <span matTooltip="{{'store-customer.tooltipCatchment' | translate}}">
+                  <mat-icon class="material-icons" style="cursor:pointer">info</mat-icon>
+                </span>
+              </div>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="cockpit">
+              <mat-card id="fidelizacion">
+                <div class="title">{{'store-customer.cardLoyalty' | translate | uppercase}}</div>
+                <div>{{fidelizacion[1] !== '' ? fidelizacion[1] : '00'}},
+                  <sup>{{fidelizacion[2] !== '' ? fidelizacion[2] : '00'}}</sup>
+                  <span>%</span>
+                </div>
+              </mat-card>
+              <div class="tooltip">
+                <span matTooltip="{{'store-customer.tooltipLoyalty' | translate}}">
+                  <mat-icon class="material-icons" style="cursor:pointer">info</mat-icon>
+                </span>
+              </div>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="cockpit">
+              <mat-card id="conversion">
+                <div class="title">{{'store-customer.cardConversion' | translate | uppercase}}</div>
+                <div>{{conversion[1] !== '' ? conversion[1] : '00'}},
+                  <sup>{{conversion[2] !== '' ? conversion[2] : '00'}}</sup>
+                  <span>%</span>
+                </div>
+              </mat-card>
+              <div class="tooltip">
+                <span matTooltip="{{'store-customer.tooltipConversion' | translate}}">
+                  <mat-icon class="material-icons" style="cursor:pointer">info</mat-icon>
+                </span>
+              </div>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+
+  </div>
+</main>

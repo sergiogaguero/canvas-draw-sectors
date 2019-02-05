@@ -1,0 +1,42 @@
+@import "../../../paleta_ocp.scss";
+.mat-column-name{
+    flex-grow: 2;
+}
+.mat-column-name.mat-cell {
+    font-weight: bold;
+}
+
+.mat-column-email {
+    flex-grow: 2;
+}
+.mat-column-email.mat-cell {
+    color: $cyan;
+    font-weight: bold;
+}
+
+.mat-column-role {
+    flex-grow: 2;
+}
+.mat-column-role.mat-cell {
+    font-weight: bold;
+}
+
+.mat-column-actions.mat-cell {
+    text-align: center;
+}
+.mat-cell.mat-column-actions.mat-cell {
+    text-align: right;
+}
+
+
+//FIX because materialize sucks
+input:not([type]), input:not([type]):focus:not([readonly]){
+  margin:0;
+  height: auto;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+.mat-form-field{
+  width: 100%;
+}

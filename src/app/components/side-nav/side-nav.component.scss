@@ -1,0 +1,177 @@
+@import "../../../paleta_ocp.scss";
+
+// VARIABLES
+$height-nav: 60px;
+
+
+aside{
+    z-index: 99;
+    position:fixed;
+    top:0;
+    left: 0;
+    bottom: 0;
+}
+
+.divider-v{
+    width: 2px;
+    height: 40px;
+    margin: 0 10px;
+    border-right: 1px solid $divider-border;
+}
+
+.logoMenu{
+    display:flex;
+    height:40px;
+    background:$dark-blue;
+    text-align:center;
+    padding:10px;
+        a{
+            line-height: 40px;
+            margin: 0 11px;
+            // margin: 0 20px;
+        }
+        mat-icon{
+            line-height: 40px;
+            height: 40px;
+            width:40px;
+            color:$white;
+            cursor:pointer;
+        }
+}
+
+#logo {
+    text-align: center;
+    img {
+        height:90px;
+        margin: $standard-padding auto;
+    }
+    .imgIsoLogo {
+        height: 50px;
+        margin: calc(#{$standard-padding} + 20px) auto;
+    }
+}
+.fadeIn{
+    animation:fadeIn 2s;
+}
+
+.fadeOut{
+    display: none;
+    opacity:0;
+    animation:fadeOut 2s;
+}
+
+.contenidoAside{
+    background:$blue;
+}
+
+.contenidoAsideClose{
+    width: 83px;
+    transition:width 0.5s ease;
+}
+
+.contenidoAsideOpen{
+    width: 280px;
+    transition:width 0.5s ease;
+}
+
+.containerLogoResponsive{
+    display:none;
+}
+
+.responsive{
+    display:none!important;
+}
+nav {
+    overflow-y: auto;
+    font-size: 1rem;
+    height: calc(100vh - #{$height-nav} - 90px - #{$standard-padding} * 2);
+
+    a {
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .menu-item{
+        display: flex;
+        transition: width 1s;
+        padding: 0 $standard-padding;
+        align-items: center;
+        height:$height-nav;
+        color:$cyan;
+        opacity: 1;
+    }
+    .subMenu {
+        background:$cyan;
+        overflow: hidden;
+            a{
+                background:none;
+                color:$white!important;
+                padding-left: calc(#{$standard-padding} * 2);
+                span{
+                    color:$white!important;
+                }
+            }
+    }
+}
+
+
+.subMenuClose{
+    height: auto;
+    max-height: 0;
+    transition: max-height 1s;
+    animation:fadeOut 1s;
+
+}
+.subMenuOpen{
+    max-height: 999px;
+    transition: max-height 2s;
+    opacity:1;
+    animation:fadeIn 1s;
+}
+
+.navMenuOpen{
+    cursor: pointer;
+    span{
+        opacity:1;
+        margin-left: $small-padding;
+        animation:fadeIn 1s;
+    }
+    mat-icon{
+        opacity:1;
+        animation:fadeIn 1s;
+    }
+}
+
+.active-link, .active-sublink{
+    color: $white;
+    /* background-color: $dark-blue;*/
+}
+
+
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@media screen and (max-width: 1024px){
+     .contenidoAsideClose{
+        width:0;
+    }
+    .noDisplay{
+        display:none;
+    }
+}
+

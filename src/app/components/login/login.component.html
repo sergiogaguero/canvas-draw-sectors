@@ -1,0 +1,51 @@
+<div class="background">
+  <div class="center-column">
+    <div class="logo">
+        <img src="./assets/images/OCP-logo_login.png" alt="OCP">
+    </div>
+
+    <div *ngIf="restablecida" class="message success">
+      <span>{{'login.msjPassReset1' | translate}}</span>
+      <span>{{'login.msjPassReset2' | translate}}</span>
+    </div>
+
+    <div *ngIf="errorLogin" class="message error">
+      <span>{{'login.incorrectData' | translate}}</span>
+    </div>
+
+    <div class="loginContainer">
+      <form [formGroup]="userToLogin" (submit)="login()">
+        <mat-form-field>
+          <input required matInput id="usuario" placeholder="{{'config.user.email' | translate}}" formControlName="email">
+          <mat-error *ngIf="emailFormControl.hasError('required') && !emailFormControl.hasError('pattern')">
+            {{'login.noEmailError' | translate }}
+          </mat-error>
+          <mat-error *ngIf="emailFormControl.hasError('pattern') && !emailFormControl.hasError('required')">
+            {{'login.wrongEmailError' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input required matInput placeholder="{{'login.password' | translate}}" id="password" formControlName="password" type="password">
+          <mat-error *ngIf="passwordFormControl.hasError('required')">
+            {{'login.noPasswordError' | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-checkbox formControlName="recordar">{{'login.remember' | translate }}</mat-checkbox>
+        <hr>
+
+        <button mat-raised-button color="primary" id="login-btn" type="submit">{{'general.access' | translate | uppercase}}</button>
+
+        <div class="forgotPw">
+          <a [routerLink]="['/forgot-password']">{{'login.messagePass' | translate}}</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="derechos">
+      <span>{{'general.copyright' | translate}}</span>
+      <span>{{'general.rightsReserved' | translate}}</span>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>
+  {{'config.regions.edit.title' | translate}}
+  <mat-icon>keyboard_arrow_right</mat-icon>
+  <span>{{'config.regions.edit.editRegion' | translate}}</span>
+</h1>
+<div mat-dialog-content>
+  <form [formGroup]="editRegion">
+
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.name" placeholder="{{'config.regions.namePlaceholder' | translate}}" required [formControl]="regionNameFormControl"
+        pattern="{{regex}}">
+      <mat-error *ngIf="regionNameFormControl.hasError('pattern')">
+        {{'config.regions.edit.regionNameError' | translate}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select required [(ngModel)]="data.responsableId" name="responsableId" placeholder="{{'config.regions.responsablePlaceholder' | translate}}" [formControl]="responsableIdFormControl">
+        <mat-option value disabled>{{'config.regions.edit.selectResponsableRegion' | translate}}</mat-option>
+        <mat-option *ngFor="let responsable of responsables" [value]="responsable.accountId">{{responsable.name}} {{responsable.lastname}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="responsableIdFormControl.hasError('required')">
+        {{'config.regions.edit.regionResponsableError' | translate}}
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button (click)="onNoClick()" tabindex="-1">{{'general.cancel' | translate | uppercase}}</button>
+  <button mat-raised-button color="accent" (click)="validate()" tabindex="2">{{'general.save' | translate | uppercase}}</button>
+</div>

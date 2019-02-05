@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>
+    {{data.title}}
+</h1>
+<div mat-dialog-content>
+    {{data.message}}
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-raised-button color="accent" [mat-dialog-close]="data" tabindex="2">{{'general.accept' | translate | uppercase}}</button>
+</div>

@@ -1,0 +1,25 @@
+@import "../../../paleta_ocp.scss";
+
+
+.mat-column {
+    text-align: center;
+}
+.mat-column-name.mat-cell{
+    color:$cyan;
+    font-weight: bold;
+}
+.mat-column-responsable{
+    flex-grow: 2;
+}
+.mat-column-responsable.mat-cell {
+    font-weight: bold;
+}
+.mat-column-floors{
+    text-align: center;
+    span:not(.not-bold){
+        font-weight: bold;
+    }
+}
+.mat-column-actions {
+    text-align: center;
+}

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>
+    {{'config.regions.delete.title' | translate}}
+    <mat-icon>&#xE315;</mat-icon>
+    <span>{{'config.regions.delete.deleteRegion' | translate}}</span>
+</h1>
+<div mat-dialog-content>
+    <p *ngIf="data.stores.length">{{'config.regions.delete.deleteRegionWithFloors' | translate:data}}</p>
+    <p *ngIf="!data.stores.length">{{'config.regions.delete.deleteRegionWithNoFloors' | translate:data}}</p>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-raised-button (click)="onNoClick()" tabindex="-1">{{'general.cancel' | translate | uppercase}}</button>
+    <button *ngIf="!data.stores.length" mat-raised-button [mat-dialog-close]="data" tabindex="2" color="accent">{{'general.delete' | translate | uppercase}}</button>
+    <button *ngIf="data.stores.length" mat-raised-button (click)="onNoClick()" color="accent" [routerLink]="['settings', 'stores']" tabindex="2">{{'config.regions.delete.showStores' | translate | uppercase}}</button>
+</div>

@@ -1,0 +1,76 @@
+<main>
+    <h1>
+        <img src="./assets/images/OCP-logo_fondoblanco.png">
+        <div>
+            <span>{{'home.welcome' | translate:user}}</span>
+            {{'home.title' | translate}}
+        </div>
+    </h1>
+    <article>
+        <div class="contentWrapper">
+            <div *ngIf="user?.role.name === roles.associate" id="isAssociate">
+                <p>{{'store-operations.isAssociate' | translate}}</p>
+            </div>
+
+            <mat-grid-list *ngIf="user?.role.name !== roles.associate" appGridList cols="3" xs="1" sm="2" md="2" lg="4" xl="4" gutterSize="24px" [rowHeight]="rowHeight">
+                <mat-grid-tile>
+                    <div>
+                        <mat-card #cards>
+                            <mat-icon>dashboard</mat-icon>
+                            <mat-card-content [style.height.px]="tallestCardContent">
+                                <h3>{{'home.operations.title' | translate}}</h3>
+                                <p>{{'home.operations.description' | translate}}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-raised-button color="accent" [routerLink]="['/store-operations']" *ngIf="user?.role.name == roles.storeMgr">{{'home.operations.action' | translate | uppercase}}</button>
+                                <button mat-raised-button color="accent" [routerLink]="['/store-chain-operations']" *ngIf="user?.role.name !== roles.storeMgr">{{'home.operations.action' | translate | uppercase}}</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div>
+                        <mat-card #cards>
+                            <mat-icon>group_work</mat-icon>
+                            <mat-card-content [style.height.px]="tallestCardContent">
+                                <h3>{{'home.customers.title' | translate}}</h3>
+                                <p>{{'home.customers.description' | translate}}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-raised-button color="accent" [routerLink]="['/store-customer']">{{'home.customers.action' | translate | uppercase}}</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div>
+                        <mat-card #cards>
+                            <mat-icon>&#xE7EF;</mat-icon>
+                            <mat-card-content [style.height.px]="tallestCardContent">
+                                <h3>{{'home.salesforce.title' | translate}}</h3>
+                                <p>{{'home.salesforce.description' | translate}}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-raised-button color="accent" [routerLink]="['/salesforce']">{{'home.salesforce.action' | translate | uppercase}}</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div>
+                        <mat-card #cards>
+                            <mat-icon>pie_chart</mat-icon>
+                            <mat-card-content [style.height.px]="tallestCardContent">
+                                <h3>{{'home.reports.title' | translate}}</h3>
+                                <p>{{'home.reports.description' | translate}}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-raised-button color="accent" [routerLink]="['/reports']">{{'home.reports.action' | translate | uppercase}}</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+    </article>
+</main>

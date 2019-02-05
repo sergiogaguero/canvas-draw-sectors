@@ -1,0 +1,14 @@
+@import "../../../paleta_ocp.scss";
+
+#adjust {
+    margin: -16px 0px -10px 0px;
+}
+
+.storeName {
+    color: $cyan;
+    font-weight: bold;
+}
+
+.hasNoData {
+    color: $error;
+} 

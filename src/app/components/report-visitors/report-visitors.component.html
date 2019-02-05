@@ -1,0 +1,91 @@
+<div class="filters" *ngIf="!noRegionsError && !noFloorsError && !noMapsError">
+    <mat-form-field *ngIf="regions.length > 0">
+        <mat-select [(ngModel)]="selectedRegion" placeholder="{{ 'general.regions' | translate}}" (change)="getReportData()">
+            <mat-option [value]="-1">{{'reportRegion.allRegions' | translate}}</mat-option>
+            <mat-option *ngFor="let region of regions" [value]="region.regionId">{{region.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div class="center">
+        <button mat-icon-button (click)="changeMonth(-1)">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <h6 class="mes">{{ currentlyShownMonth.format('MMMM YYYY') }}</h6>
+        <button mat-icon-button (click)="changeMonth(1)" *ngIf="!(currentlyShownMonth.format('MM') == today.format('MM') && currentlyShownMonth.format('YYYY') == today.format('YYYY'))">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
+</div>
+
+
+<div *ngIf="loading" class="loading-wrapper">
+    <mat-spinner></mat-spinner>
+</div>
+
+<!-- Visual error handling! :O -->
+<div *ngIf="noRegionsError || noStoresError || noFloorsError || noMapsError" class="errorWrapper">
+    <mat-icon>warning</mat-icon>
+    <h3>{{'reportRegion.errorTitle' | translate}}</h3>
+
+    <!-- if there's no regions... -->
+    <div *ngIf="noRegionsError">
+        <p>{{'errors.noRegionError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/regions']" [routerLink]="['/settings/regions']" mat-raised-button color="accent">
+            <mat-icon>store</mat-icon> {{'config.regions.addRegion' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/regions']">
+            {{'errors.contactAdmin' | translate}}
+        </div>
+    </div>
+
+    <!-- if there's no stores... -->
+    <div *ngIf="noStoresError">
+        <p>{{'errors.noStoreError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/stores/add']" [routerLink]="['/settings/stores/add']" mat-raised-button color="accent">
+            <mat-icon>store</mat-icon> {{'config.store.add.addStore' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/stores/add']">
+            {{'errors.contactAdmin' | translate}}
+        </div>
+    </div>
+
+    <!-- if there's no floors... -->
+    <div *ngIf="noFloorsError">
+        <p>{{'errors.noFloorError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/stores/:id']" [routerLink]="['/settings/stores']" mat-raised-button color="accent">
+            <mat-icon>layers</mat-icon> {{'config.store.edit.addFloor' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/stores/:id']">
+            {{'errors.contactAdmin' | translate}}
+        </div>
+    </div>
+
+    <!-- if there's no maps... -->
+    <div *ngIf="noMapsError">
+        <p>{{'errors.noMapError' | translate}}</p>
+        <button *ngIf="menuVisibility['/settings/stores/:id/floors/:id']" [routerLink]="['/settings/stores']" mat-raised-button color="accent">
+            <mat-icon>map</mat-icon> {{'config.store.edit.floor.addMap' | translate | uppercase}}</button>
+        <div *ngIf="!menuVisibility['/settings/stores/:id/floors/:id']">
+            {{'errors.contactAdmin' | translate}}
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="!loading && !noRegionsError && !noStoresError && !noFloorsError && !noMapsError && !noDataError">
+
+    <h3>{{'reportRegion.titleChartVisit' | translate}}</h3>
+    <div class="chart center">
+        <div class="v-text">{{'reportRegion.visitors'| translate}}</div>
+        <div class="chart-wrapper">
+            <canvas baseChart [datasets]="barChartDataVisit" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                [chartType]="'line'" height="200" width="90%">
+            </canvas>
+        </div>
+    </div>
+    <h3>{{'reportRegion.titleChartAverage' | translate}}</h3>
+    <div class="chart center">
+        <div class="v-text">{{'reportRegion.minute'| translate}}</div>
+        <div class="chart-wrapper">
+            <canvas baseChart [datasets]="barChartDataDwell" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                [chartType]="'line'" height="200" width="90%">
+            </canvas>
+        </div>
+    </div>
+</div>

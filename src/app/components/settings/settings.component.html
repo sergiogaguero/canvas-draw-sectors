@@ -1,0 +1,18 @@
+<main>
+  <h1>{{'settings.configurations' | translate }}</h1>
+  <article>
+    <div class="navigatorBar">
+      <a *ngIf="menuVisibility['/settings/usuarios']" routerLinkActive="active" [routerLink]="['usuarios']">{{'config.user.users' | translate | uppercase}}</a>
+      <a *ngIf="menuVisibility['/settings/regions']" routerLinkActive="active" [routerLink]="['regions']">{{'general.regions' | translate | uppercase}}</a>
+      <a *ngIf="menuVisibility['/settings/stores']" routerLinkActive="active" [routerLink]="['stores']">{{'general.stores' | translate | uppercase}}</a>
+      <a *ngIf="menuVisibility['/settings/apis']" routerLinkActive="active" [routerLink]="['apis']">{{ 'config.apis.title' | translate | uppercase }}</a>
+      <a *ngIf="menuVisibility['/settings/general']" routerLinkActive="active" [routerLink]="['general']">{{ 'config.general.title' | translate | uppercase }}</a>
+      <a *ngIf="menuVisibility['/settings/status']" routerLinkActive="active" [routerLink]="['status']">{{ 'config.status.title' | translate | uppercase }}</a>
+      <a *ngIf="menuVisibility['/settings/splash-page']" routerLinkActive="active" [routerLink]="['splash-page']">{{ 'side-nav.splashPage' | translate | uppercase }}</a>
+    </div>
+    <div class="contentWrapper">
+      <router-outlet></router-outlet>
+    </div>
+
+  </article>
+</main>

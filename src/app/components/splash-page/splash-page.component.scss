@@ -1,0 +1,80 @@
+@import "../../../paleta_ocp.scss";
+
+.subHeader {
+    .right {
+        span {
+            font-size: 0.8em;
+            color: $gris-1;
+            padding-right: $small-padding;
+        }
+    }
+}
+#stepperContainer {
+    transition: 0.5s;
+}
+.backgroundImage {
+    width: 100%;
+    margin: 0 auto;
+    min-height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    border-radius: $standard-radius;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    .styleLogo {
+        display: block;
+        max-height: 150px;
+        max-width: 100%;
+        margin: $standard-padding auto;
+    }
+    .text {
+        padding-bottom: $standard-padding;
+        text-align: center;
+        padding: $standard-padding;
+        width: 25%;
+        min-width: 200px;
+        margin: 0 auto $standard-padding auto;
+        border-radius: $standard-radius;
+        overflow: auto;
+        word-wrap: break-word;
+    }
+    .form {
+        text-align: center;
+        padding: $standard-padding;
+        width: 25%;
+        min-width: 200px;
+        margin: 0 auto $standard-padding auto;
+        background-color: rgba(red($gris-2),green($gris-2), blue($gris-2), 0.8);
+        border-radius: $standard-radius;
+        overflow: auto;
+    }
+}
+
+.editor {
+    width: 100%;
+    height: 40%;
+    margin: auto;
+    opacity: 0.5;
+}
+
+
+
+.stepTwo {
+    height: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+#finalizar{
+    margin-top: $standard-padding;
+}
+

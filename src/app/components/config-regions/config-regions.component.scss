@@ -1,0 +1,36 @@
+@import "../../../paleta_ocp.scss";
+
+.mat-column-responsable{
+    flex-grow: 2;
+}
+.mat-column-responsable.mat-cell {
+    font-weight: bold;
+}
+
+button:focus {
+    outline: none;
+    background:none;
+}
+
+.mat-column-actions {
+    text-align: center;
+}
+
+.mat-column-tienda {
+    font-weight: bold;
+    flex-grow: 2;
+}
+
+
+//FIX BECAUSE MATERIALIZE SUCKS
+input:not([type]), input:not([type]):focus:not([readonly]) {
+   margin: 0;
+   border-bottom: 0 !important;
+   box-shadow: none !important;
+   height: auto;
+}
+
+//CSS del dialog
+.mat-form-field{
+  width: 100%
+}

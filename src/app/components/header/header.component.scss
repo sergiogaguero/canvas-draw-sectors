@@ -1,0 +1,123 @@
+@import "../../../paleta_ocp.scss";
+
+.divider-v{
+    width: 2px;
+    height: 40px;
+    margin: 0 $small-padding;
+    border-right: 1px solid $divider-border;
+}
+
+header{
+    height: 40px;
+    background: $dark-blue;
+    z-index: 98;
+    display:flex;
+    justify-content:flex-end;
+    position:fixed;
+    top:0;
+    left: 0;
+    right: 0;
+    padding: 10px $standard-padding;
+    color: $white;
+    .user-profile{
+        display: flex;
+        align-items: center;
+        img{
+            height:30px;
+            border-radius:50%;
+        }
+        .user{
+            padding-left: 10px;
+            font-size: 11px;
+            .name {
+                font-size: 13px;
+                color: $cyan;
+            }
+        }
+    }
+    #logout {
+        margin-left: $small-padding;
+        opacity: 0.8;
+    }
+    .mat-menu-panel {
+        background: $cyan !important;
+    }
+    .mat-icon#setting{
+        font-size: 18px;
+        opacity: 0.8;
+    }
+}
+hr {
+    margin: 10px 0;
+    color: $white;
+}
+
+
+/* Css Profile User*/
+.mat-radio-button {
+  padding-right: $small-padding;
+  display: inline-flex;
+}
+.mat-icon {
+  color: $white;
+}
+
+.mat-expansion-panel-header-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color:$white;
+  padding: 0 $small-padding;
+  div {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .mat-icon {
+          margin-right: 5px;
+      }
+  }
+  .mat-icon {
+      font-size: 18px;
+      position: relative;
+      bottom: -3px;
+  }
+}
+
+.language{
+  color:$white;
+  text-align: center;
+  padding-bottom: $small-padding;;
+  span{
+    font-weight: bold;
+    small{
+      font-weight: normal;
+    }
+  }
+  .mat-icon{
+    font-size: 18px;
+    align-content: center;
+    position: relative;
+    bottom: -3px; 
+    margin-top: 3px;
+  }
+}
+.radio{
+  padding-left: $small-padding;
+}
+
+.mat-radio-label label{
+  color: white;
+}
+
+label.mat-radio-label-content{
+    color: white;
+}
+
+
+@media screen and (max-width: 650px){
+
+    .headerNav{
+        display:none;
+    }
+
+}

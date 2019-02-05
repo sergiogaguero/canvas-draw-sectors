@@ -1,0 +1,79 @@
+<div class="subHeader" id="Breadcrumb">
+    <div class="left">
+        <h3>{{'general.stores' | translate}}</h3>
+        <span>-</span>
+        <span>{{'config.store.list.storeList' | translate}}</span>
+    </div>
+    <div class="right">
+        <button mat-raised-button color="accent" [routerLink]="['add']">
+            <mat-icon>store</mat-icon>
+            <span>{{'config.store.list.newStore' | translate | uppercase}}</span>
+        </button>
+    </div>
+</div>
+
+<div class="loading-wrapper" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<mat-table #table matSort [dataSource]="dataSource" *ngIf="!noStoresError && !loading">
+    <ng-container matColumnDef="idinCustomerDB">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'config.store.list.id' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.idinCustomerDB}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{'general.store' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="region">
+        <mat-header-cell *matHeaderCellDef> {{'general.region' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.region.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="responsable">
+        <mat-header-cell *matHeaderCellDef> {{'general.responsable' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="person">
+            <img src="../../assets/images/avatar_profile.png" alt="">
+            <div class="info">
+                <span> {{element.responsable.name}} {{element.responsable.lastname}}</span>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="floors">
+        <mat-header-cell *matHeaderCellDef> {{'general.floors' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <span *ngIf="element.floors.length > 0">{{element.floors.length}}</span>
+            <span *ngIf="element.floors.length <= 0" class="not-bold">{{'config.store.list.noFloors' | translate}}</span>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> {{'general.actions' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <button mat-icon-button [routerLink]="[element.storeId]">
+                <mat-icon>mode_edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="openDeleteStoreDialog(element)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" *ngIf="!noStoresError && tiendas?.length > 0">
+</mat-paginator>
+
+
+<div class="errorWrapper" *ngIf="noStoresError">
+    <mat-icon>warning</mat-icon>
+    <h3>{{'config.store.noStoresErrorTitle' | translate}}</h3>
+    <p>{{'config.store.noStoresError' | translate}}</p>
+    <button [routerLink]="['add']" mat-raised-button color="accent">
+        <mat-icon>store</mat-icon> {{'config.store.list.newStore' | translate | uppercase}}
+    </button>
+</div>

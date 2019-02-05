@@ -1,0 +1,207 @@
+<main>
+  <h1>{{'salesforce.title'| translate}}</h1>
+  <article class="wrapper" *ngIf="(!noStoreError || userRole !== roles?.storeMgr) && !noRegionError">
+    <div class="grey-bar">
+      <div id="store-info">
+        <mat-form-field *ngIf="userRole === roles?.admin">
+          <mat-select placeholder="{{ 'general.regions' | translate}}" [(ngModel)]="currentRegion" (change)="getRegionalData()">
+            <mat-option [value]="-1">{{'salesforce.allRegions' | translate}}</mat-option>
+            <mat-option *ngFor="let region of regions" [value]="region.regionId">{{region.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <h2 *ngIf="region">{{region?.name}}:</h2>
+        <mat-form-field *ngIf="currentRegion !== -1">
+          <mat-select placeholder="{{ 'general.stores' | translate}}" [(ngModel)]="currentStore" (change)="getStoreData()">
+            <mat-option [value]="-1">{{'salesforce.allStores' | translate}}</mat-option>
+            <mat-option *ngFor="let store of stores" [value]="store.storeId">{{store.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <h3 *ngIf="store && currentRegion === -1">{{store?.name}}</h3>
+      </div>
+      <div id="range-picker">
+        <mat-form-field>
+          <input matInput [matDatepicker]="startingDate" placeholder="{{'salesforce.startingDate' | translate}}" disabled [(ngModel)]="periodStartingDate"
+            (dateChange)="changePeriod()" [max]="periodEndingDate">
+          <mat-datepicker-toggle matSuffix [for]="startingDate"></mat-datepicker-toggle>
+          <mat-datepicker #startingDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="endingDate" placeholder="{{'salesforce.endingDate' | translate}}" disabled [(ngModel)]="periodEndingDate"
+            [max]="yesterday" (dateChange)="changePeriod()" [min]="periodStartingDate">
+          <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+          <mat-datepicker #endingDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div id="selectedPeriod">
+      <span>
+        <mat-icon>date_range</mat-icon> {{'salesforce.selectedPeriod' | translate}}:
+      </span> {{currentlySelectedPeriod | capitalize}}
+    </div>
+
+
+    <mat-table #table [dataSource]="dataSource" matSort *ngIf="!noStoreError && totals?.salesforce.length > 0">
+
+      <ng-container matColumnDef="associate">
+        <mat-header-cell *matHeaderCellDef>
+          <div class="table-title">{{'salesforce.associate' | translate}}</div>
+          <div class="totals">
+            <div class="associate">
+              <span id="totals-title">{{'salesforce.totals' | translate}}</span>
+              <div>
+                <mat-icon>group</mat-icon> {{totals?.salesforce.length}}</div>
+            </div>
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span *ngIf="element.associate.firstname && element.associate.lastname">
+            {{element.associate.firstname}} {{element.associate.lastname}}
+          </span>
+          <span *ngIf="!(element.associate.firstname && element.associate.lastname)">
+            {{element.associate.idinCustomerDB}}
+          </span>
+        </mat-cell>
+      </ng-container>
+<!-- 
+      <ng-container matColumnDef="storeName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="table-title">{{'general.store' | translate}}</div>
+          <div class="totals">
+            <div class="store">
+              <div *ngIf="dataSource?.data.length > 0">
+                <mat-icon>store</mat-icon>
+                <span *ngIf="currentStore == -1">{{stores?.length}}</span>
+                <span *ngIf="currentStore != -1">1</span>
+              </div>
+              <div *ngIf="dataSource?.data.length == 0">
+                <mat-icon>store</mat-icon> 0</div>
+            </div>
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{element.storeName}}
+        </mat-cell>
+      </ng-container> -->
+
+      <ng-container matColumnDef="prodDays">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="table-title">{{'salesforce.prodDays' | translate}}</div>
+          <div class="totals">
+            <div class="prodDays">
+              <div matTooltip="{{'salesforce.tooltipDays' | translate}}">
+                <mat-icon>date_range</mat-icon> {{cantDaysSelectPeriod}}</div>
+            </div>
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="numeric" matTooltip="{{'salesforce.tooltipProdDays' | translate}}">{{element.prodDays}}</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="qTickets">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="table-title">{{'salesforce.ticketAmount' | translate}}</div>
+          <div class="totals">
+            <div class="qTickets">
+              <div>
+                <mat-icon>style</mat-icon> {{totals?.qTickets}}</div>
+            </div>
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="numeric" matTooltip="{{'salesforce.tooltipQticketsProdDays' | translate}} = {{element.qTicketsProdDays | number:'0.1-2'}}">{{element.qTickets}}</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="upt">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="table-title" matTooltip="{{'salesforce.unitsPerTicket' | translate}}">{{'salesforce.upt' | translate}}</div>
+          <div class="totals">
+            <div class="upt">
+              <div>
+                <mat-icon>shopping_basket</mat-icon> {{totals?.upt | number:'1.2-2'}}</div>
+            </div>
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="numeric">{{element.upt | number:'1.2-2'}}</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="averageTicket">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="table-title">{{'salesforce.averageTicket' | translate}}</div>
+          <div class="totals">
+            <div class="averageTickets">
+              <div>
+                <mat-icon>receipt</mat-icon> {{totals?.averageTicket | number:'1.2-2'}} $</div>
+            </div>
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="numeric">{{element.averageTicket | number:'1.2-2'}} $</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="sales">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="table-title">{{'salesforce.sales' | translate}}</div>
+          <div class="totals">
+            <div class="sales">
+              <div>
+                <mat-icon>credit_card</mat-icon> {{totals?.sales | unitSuffix:2}}</div>
+            </div>
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="numeric" matTooltip="{{'salesforce.tooltipSalesProdDays' | translate}} = {{element.salesProdDays | number:'1.2-2'}}">{{element.sales | unitSuffix:2}}$</div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" *ngIf="!noStoreError && totals?.salesforce.length > 0">
+    </mat-paginator>
+
+    <div class="errorWrapper" *ngIf="totals?.salesforce == undefined || totals?.salesforce.length == 0 && !noStoreError">
+      <mat-icon>date_range</mat-icon>
+      <h2>{{'salesforce.noDataTitle' | translate}}</h2>
+      <p>{{'salesforce.noDataDetail' | translate}}</p>
+    </div>
+
+    <div class="errorWrapper" *ngIf="noStoreError">
+      <mat-icon>warning</mat-icon>
+      <p>{{'errors.noStoreError' | translate}}</p>
+      <button *ngIf="menuVisibility['/settings/stores/add']" [routerLink]="['/settings/stores/add']" mat-raised-button color="accent">
+        <mat-icon>store</mat-icon> {{'config.store.add.addStore' | translate | uppercase}}</button>
+      <p *ngIf="!menuVisibility['/settings/regions']">
+        {{'errors.contactAdmin' | translate}}
+      </p>
+    </div>
+  </article>
+
+  <article class="wrapper" *ngIf="noRegionError">
+    <div class="errorWrapper">
+      <mat-icon>warning</mat-icon>
+      <p>{{'errors.noRegionError' | translate}}</p>
+      <button *ngIf="menuVisibility['/settings/regions']" [routerLink]="['/settings/regions/']" mat-raised-button color="accent">
+        <mat-icon>place</mat-icon> {{'config.regions.addRegion' | translate | uppercase}}</button>
+      <p *ngIf="!menuVisibility['/settings/regions']">
+        {{'errors.contactAdmin' | translate}}
+      </p>
+    </div>
+  </article>
+  <article class="wrapper" *ngIf="userRole == roles?.storeMgr && noStoreError">
+    <div class="errorWrapper">
+      <mat-icon>warning</mat-icon>
+      <p>{{'errors.noStoreError' | translate}}</p>
+      <button *ngIf="menuVisibility['/settings/stores/add']" [routerLink]="['/settings/stores/add']" mat-raised-button color="accent">
+        <mat-icon>store</mat-icon> {{'config.store.add.addStore' | translate | uppercase}}</button>
+      <p *ngIf="!menuVisibility['/settings/regions']">
+        {{'errors.contactAdmin' | translate}}
+      </p>
+    </div>
+  </article>
+</main>

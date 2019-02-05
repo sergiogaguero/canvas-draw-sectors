@@ -1,0 +1,213 @@
+@import "../../../paleta_ocp.scss";
+.containerEditarPiso{
+    margin: 20px 0;
+    .title {
+        font-size:18px;
+        color:$blue;
+    }
+    mat-grid-tile {
+        div {
+            width: 100%;
+            vertical-align: top;
+            align-self: flex-start;
+        }
+    }
+    .informacion{
+        .storeInfo {
+            .id{
+                color:$cyan;
+            }
+            .region{
+                color:#72848c;
+                font-size:14px;
+            }
+            .persona{
+                display: flex;
+                align-items: center;
+                margin-top:5px;
+                span{
+                    margin-left:10px;
+                }
+                img{
+                    height: 40px;
+                    border-radius:50%;
+                }
+            }
+        }
+
+        .maps {
+            margin-top:20px;
+            margin-bottom: 10px;
+            .title{
+                margin:10px 0px;
+                font-weight: bold;
+            }
+            i{
+                margin-right:5px;
+            }
+            .mat-raised-button{
+                width:100%;
+                padding:20px;
+                text-align: center;
+            }
+            mat-list {
+                max-height: 250px;
+                overflow: auto;
+
+                .mat-list-item:first {
+                    border-top:1px solid #cccacb;
+                }
+                .mat-list-item {
+                    display: flex;
+                    align-items: center;
+                    border-bottom:1px solid #cccacb;
+                    height: auto;
+                    cursor:pointer;
+
+                    ::ng-deep.mat-list-item-content {
+                        width: 100%;
+                        padding: 5px 15px;
+                        .iconMap{
+                            width:10%;
+                            color:#666666;  
+                        }
+                        .vigencia{
+                            width:70%;
+                            display:flex;
+                            flex-direction: column;
+                            .tituloVigencia{
+                                color:#666666;  
+                                font-weight: bold;
+                            }
+                            .subtituloVigencia{
+                                font-size:13px;
+                            }
+                        }
+                        .iconEye{
+                            color:#666666;  
+                            width:30%;
+                            text-align: right;
+                        }
+                    }
+                }
+                .vigente{
+                    background:#f1f1f1;
+                }
+                .selected {
+                    .iconMap{
+                        color:$cyan;
+                    }
+                    .vigencia{
+                        .tituloVigencia{
+                            color:$cyan;
+                        }
+                    }
+                    .iconEye{
+                        color:$cyan;
+                    }
+                }
+            }
+        }        
+    }
+
+    .plano{
+        .titulo{
+            font-weight: bold;
+        }
+        .fecha{
+            font-weight: bold;
+            color:$cyan;
+            font-size:18px;
+        }
+        .comentario{
+            color:#bcbcbc;
+        }
+        .referencias{
+            display: flex;
+            justify-content: space-between;
+            margin-top:20px;
+            color:$cyan;
+            font-weight: bold;
+            font-size:11px;
+        }
+        #planoImg{
+            height: 100%;
+            background-size:contain!important;
+            display:block;
+            
+            #canvas-container {
+                position: relative;
+                .over-map {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                }
+                #no-sections {
+                    //opacity: 0;
+                    transition: 0.5s;
+                    .card {
+                        background-color:$dark-blue;
+                        margin: auto;
+                        .warning {
+                            font-size: 3.5em;
+                            opacity: 0.75;
+                        }
+                        .card-action {
+                            .material-icons {
+                                line-height: 1;
+                                position: relative;
+                                top: 4px;
+                            }
+                        }
+                    }
+                }
+            }
+            /*#canvas-container:hover {
+                #no-sections {
+                    opacity: 1;
+                    transition: 0.5s;
+                }
+            }*/
+        }
+    }
+
+}
+
+
+.subtituloTienda{
+    color:#b0b0b0!important;
+    font-weight: bold!important;
+    padding-bottom:10px!important;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+.file-input.mat-form-field {
+    ::ng-deep.mat-input-infix {
+        display: flex;
+        button {
+            margin-left: 5px;
+            flex-basis: 40%;
+        }
+    }
+}
+
+.size.mat-form-field {
+    width: 49%;
+}
+
+.mat-dialog-actions {
+    text-align: right;
+}
+
+//FIX BECAUSE MATERIALIZE SUCKS
+input:not([type]), input[type="number"], input:not([type]):focus:not([readonly]), input[type="number"]:focus:not([readonly]) {
+    margin: 0;
+    height: auto;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+}

@@ -1,0 +1,13 @@
+<main>
+  <h1>{{'reports.title' | translate}}</h1>
+  <article>
+    <div class="navigatorBar">
+      <a *ngIf="menuVisibility['/reports/visitors']" routerLinkActive="active" [routerLink]="['visitors']">{{'reports.performance' | translate | uppercase}}</a>
+    </div>
+
+    <div class="contentWrapper">
+      <router-outlet></router-outlet>
+    </div>
+
+  </article>
+</main>

@@ -1,0 +1,81 @@
+<div class="subHeader" id="Breadcrumb">
+  <div class="left">
+    <h3>
+      <a [routerLink]="['/settings/stores']">{{'general.stores' | translate}}</a>
+    </h3>
+    <span>-</span>
+    <span>{{'config.store.add.addStore' | translate}}</span>
+  </div>
+</div>
+
+
+<form [formGroup]="addStore">
+  <mat-grid-list cols="3" gutterSize="24px" rowHeight="1:2" class="containerNuevaTienda">
+
+    <!-- FIRST COLUMN -->
+    <mat-grid-tile [colspan]="1">
+
+      <div>
+        <mat-form-field matTooltip="{{'config.store.idTooltip' | translate}}">
+          <input matInput required id="idincustomerdb" placeholder="{{'config.store.idPlaceholder' | translate}}" [formControl]="idFormControl"
+            [(ngModel)]="store.idinCustomerDB">
+          <mat-error *ngIf="idFormControl.hasError('required') && !idFormControl.hasError('idTaken')">
+            {{'config.store.noIdError' | translate}}
+          </mat-error>
+          <mat-error *ngIf="idFormControl.hasError('idTaken') && !idFormControl.hasError('required')">
+            {{'config.store.usedIdError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput required id="name" placeholder="{{'config.store.namePlaceholder' | translate}}" [formControl]="nameFormControl"
+            [(ngModel)]="store.name">
+          <mat-error *ngIf="nameFormControl.hasError('required')">
+            {{'config.store.noNameError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select required placeholder="{{'general.responsable' | translate}}" [formControl]="responsableFormControl" [(ngModel)]="store.responsableId">
+            <mat-option disabled selected>{{'config.store.responsableDefault' | translate}}</mat-option>
+            <mat-option *ngFor="let empleado of empleados" [value]="empleado.accountId">
+              {{empleado.name}} {{empleado.lastname}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="responsableFormControl.hasError('required')">
+            {{'config.store.noResponsableError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="{{'general.region' | translate}}" required [formControl]="regionFormControl" [(ngModel)]="store.regionId">
+            <mat-option disabled selected>{{'config.store.regionDefault' | translate}}</mat-option>
+            <mat-option *ngFor="let region of regiones" [value]="region.regionId">{{region.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="regionFormControl.hasError('required')">
+            {{'config.store.noRegionError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <input type="number" hidden required [ngModel]="store.locationLat" [formControl]="latitudeFormControl">
+        <input type="number" hidden required [ngModel]="store.locationLong" [formControl]="longitudeFormControl">
+      </div>
+    </mat-grid-tile>
+
+
+    <!-- Second column -->
+    <mat-grid-tile [colspan]="2" class="mapa">
+      <div>
+        <mat-form-field class="form-group searchInput">
+          <input matInput required placeholder="{{'config.store.addressPlaceholder' | translate}}" autocorrect="off" autocapitalize="off" spellcheck="off" [formControl]="addressFormControl" #search [(ngModel)]="store.address" >
+          <mat-error *ngIf="addressFormControl.hasError('required')">
+            {{'config.store.noAddressError' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+          <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+        </agm-map>
+        <div class="botonGuardar">
+          <button mat-button [routerLink]="['/settings', 'stores']">{{ 'general.cancel' | translate | uppercase }}</button>
+          <button mat-raised-button color="accent" (click)="saveStore()">{{ 'general.save' | translate | uppercase }}</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

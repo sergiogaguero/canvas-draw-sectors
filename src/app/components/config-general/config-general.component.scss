@@ -1,0 +1,48 @@
+@import "../../../paleta_ocp.scss";
+
+.settings-flex{
+    margin: $small-padding $standard-padding;
+    display: flex;
+  
+    .title {
+        color: $titulos;
+        font-size: 1em;
+        width: 25%;
+    }
+
+    .description {
+        width: 50%;
+        padding: 0 24px;
+    }
+
+    .form-item {
+        width: 25%;
+        .mat-slider-horizontal, .mat-form-field {
+            width: 100%;
+            padding-bottom: 0;
+        }
+        p {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 0.8em;
+            color: $gris-1;
+          }
+    }
+}
+
+
+
+
+.devices{
+  color: $cyan;
+  margin-top: $small-padding;
+  margin-left: $small-padding;
+}
+
+#save {
+  text-align: right;
+}
+
+.devicesToDiscardTitle{
+    padding-top: $standard-padding;
+}

@@ -1,0 +1,212 @@
+<main>
+  <h1>{{'store-chain-operations.title' | translate}}</h1>
+  <div class="wrapper">
+    <div class="grey-bar">
+      <div id="store-info">
+        <h2 *ngIf="!canSelectRegion && regiones[0] ">{{regiones[0].name}} </h2>
+        <span *ngIf="!canSelectRegion && notRegions">{{'store-customer.notRegion' | translate}} </span>
+        <mat-form-field *ngIf="canSelectRegion && regiones.length !== 0">
+          <mat-select placeholder="{{ 'general.regions' | translate}}" [(ngModel)]="selectedRegion" (change)="updateRegion()">
+            <mat-option [value]="-1">{{'salesforce.allRegions' | translate}}</mat-option>
+            <mat-option *ngFor="let option of regiones" [value]="option">
+              {{ option?.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div id="range-picker">
+        <mat-form-field>
+          <input matInput [matDatepicker]="startingDate" placeholder="{{'salesforce.startingDate' | translate}}" [(ngModel)]="startDate" name="startDate" [max]="endDate" disabled (dateChange)= "getKpis()">
+          <mat-datepicker-toggle matSuffix [for]="startingDate"></mat-datepicker-toggle>
+          <mat-datepicker #startingDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput [matDatepicker]="endingDate" placeholder="{{'salesforce.endingDate' | translate}}" [(ngModel)]="endDate" name="endDate" (dateChange)="getKpis()" [max]= "yesterday" [min]="startDate" disabled>
+          <mat-datepicker-toggle matSuffix [for]="endingDate"></mat-datepicker-toggle>
+          <mat-datepicker #endingDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div id="selectedPeriod" *ngIf="(startDate!==null && endDate!==null)">
+      <span>
+        <mat-icon>date_range</mat-icon> {{'salesforce.selectedPeriod' | translate}}:
+      </span><span *ngIf="wholeMonth">{{currentlySelectedPeriod | capitalize}}</span> <span *ngIf="!wholeMonth">{{startDate | date: 'd MMMM y'}} - {{endDate | date: 'd MMMM y'}}</span>
+    </div>
+    <div class="errorWrapper" *ngIf="((!canSelectRegion && notStores) || (selectedRegion!== -1 && notStores))">
+      <mat-icon>warning</mat-icon>
+      <p>{{'errors.noStoreError' | translate}}</p>
+      <button *ngIf="menuVisibility['/settings/stores/add']" [routerLink]="['/settings/stores/add']" mat-raised-button color="accent">
+        <mat-icon>store</mat-icon> {{'config.store.add.addStore' | translate | uppercase}}</button>
+      <p *ngIf="!menuVisibility['/settings/regions']">
+        {{'errors.contactAdmin' | translate}}
+      </p>
+    </div>
+    <div *ngIf="!notStores" class="container">
+      <div *ngIf="loading" id="loading">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div class="errorWrapper" *ngIf="!contentExist && !loading">
+        <mat-icon>warning</mat-icon>
+        <h2> {{ 'errors.noContentTitleClient360'| translate}} </h2>
+        <p> {{ 'errors.noContentClient360'| translate}} </p>
+      </div>
+      <div class="card-image clearfix" *ngIf="!loading && contentExist">
+        <mat-grid-list appGridList cols="3" gutterSize="24px">
+          <mat-grid-tile>
+            <div class="kpis">
+              <mat-card id="sales">
+                <div class= "title">{{'store-chain-operations.sales' | translate | uppercase}}</div>
+                <div>{{salesTotal | format: unitSales}}<span>$</span></div>
+                <div class="tooltip">
+                  <span matTooltip= "{{'store-chain-operations.tooltipSales' | translate}}">
+                    <mat-icon class="material-icons" style="cursor:pointer">info</mat-icon>
+                  </span>
+                </div>
+              </mat-card>
+              <div class="ranking divider-h">
+                <div class="example-container mat-elevation-z8">
+                    <mat-table #table [dataSource]="data.sales.dataSource" matSort matSortActive="amount"
+                                  matSortDisableClear matSortDirection="asc" >
+
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="position">
+                        <mat-header-cell *matHeaderCellDef > Ranking
+                        </mat-header-cell>
+                        <mat-cell id="position" *matCellDef="let element"> #{{element.position}}</mat-cell>
+                      </ng-container>
+
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="nombre">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.nombre}}
+                          <span> {{element.region}}</span>
+                        </mat-cell>
+                      </ng-container>
+
+                      <!-- amount Column -->
+                      <ng-container matColumnDef="amount">
+                        <mat-header-cell class="arrow" *matHeaderCellDef  mat-sort-header
+                                           disableClear="true" (click)="invertirRanking('sales')">
+                          <span *ngIf="data.sales.ascendente">Top
+                          </span>
+                          <span *ngIf="!data.sales.ascendente">Bottom
+                          </span>
+                        </mat-header-cell>
+                        <mat-cell class="amount" *matCellDef="let element"> {{element.amount | format: unitSales}}  $ ({{(element.percentage/100)  | percent}})  </mat-cell>
+                      </ng-container>
+
+                      <mat-header-row *matHeaderRowDef="displayedColumnsSales"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumnsSales;"></mat-row>
+                    </mat-table>
+                  </div>
+              </div>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="kpis">
+              <mat-card id="ticketPromedio">
+                <div class= "title">{{'store-chain-operations.ticketPromedio' | translate | uppercase}}</div>
+                <div>{{ticketPromedioTotal | format: unitTicket}}<span>$</span></div>
+                <div class="tooltip">
+                  <span matTooltip= "{{'store-chain-operations.tooltipticket' | translate}}">
+                    <mat-icon class="material-icons" style="cursor:pointer">info</mat-icon>
+                  </span>
+                </div>
+              </mat-card>
+              <div class="ranking divider-h">
+                <div class="example-container mat-elevation-z8">
+                    <mat-table #table [dataSource]="data.ticket.dataSource" matSort matSortActive="amount"
+                                  matSortDisableClear matSortDirection="asc" >
+
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="position">
+                        <mat-header-cell *matHeaderCellDef > Ranking
+                        </mat-header-cell>
+                        <mat-cell id="position" *matCellDef="let element"> #{{element.position}}</mat-cell>
+                      </ng-container>
+
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="nombre">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.nombre}}
+                          <span> {{element.region}}</span>
+                        </mat-cell>
+                      </ng-container>
+
+                      <!-- amount Column -->
+                      <ng-container matColumnDef="amount">
+                        <mat-header-cell class="arrow" *matHeaderCellDef  mat-sort-header
+                                           disableClear="true" (click)="invertirRanking('ticket')">
+                          <span *ngIf="data.ticket.ascendente">Top
+                          </span>
+                          <span *ngIf="!data.ticket.ascendente">Bottom
+                          </span>
+                        </mat-header-cell>
+                        <mat-cell class="amount" *matCellDef="let element"> {{element.amount  | format: unitTicket}}  $ </mat-cell>
+                      </ng-container>
+
+                      <mat-header-row *matHeaderRowDef="displayedColumnsTicket"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumnsTicket;"></mat-row>
+                    </mat-table>
+                  </div>
+              </div>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="kpis">
+              <mat-card id="upt">
+                <div class= "title">{{'store-chain-operations.upt' | translate | uppercase}}</div>
+                <div>{{uptTotal | format: unitUpt}}<span>u</span></div>
+                <div class="tooltip">
+                  <span matTooltip= "{{'store-chain-operations.tooltipUpt' | translate}}">
+                    <mat-icon class="material-icons" style="cursor:pointer">info</mat-icon>
+                  </span>
+                </div>
+              </mat-card>
+              <div class="ranking divider-h">
+                <div class="example-container mat-elevation-z8">
+                    <mat-table #table [dataSource]="data.upt.dataSource" matSort matSortActive="qty"
+                                  matSortDisableClear matSortDirection="asc" >
+
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="position">
+                        <mat-header-cell *matHeaderCellDef > Ranking
+                        </mat-header-cell>
+                        <mat-cell id="position" *matCellDef="let element"> #{{element.position}}</mat-cell>
+                      </ng-container>
+
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="nombre">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.nombre}}
+                          <span> {{element.region}}</span>
+                        </mat-cell>
+                      </ng-container>
+
+                      <!-- amount Column -->
+                      <ng-container matColumnDef="qty">
+                        <mat-header-cell class="arrow" *matHeaderCellDef  mat-sort-header
+                                           disableClear="true" (click)="invertirRanking('upt')">
+                          <span *ngIf="data.upt.ascendente">Top
+                          </span>
+                          <span *ngIf="!data.upt.ascendente">Bottom
+                          </span>
+                        </mat-header-cell>
+                        <mat-cell class="amount" *matCellDef="let element"> {{element.qty  | format: unitUpt}}  u </mat-cell>
+                      </ng-container>
+
+                      <mat-header-row *matHeaderRowDef="displayedColumnsUpt"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumnsUpt;"></mat-row>
+                    </mat-table>
+                  </div>
+              </div>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+
+  </div>
+</main>

@@ -1,0 +1,78 @@
+<!-- Modal Nuevo Usuario-->
+<h1 mat-dialog-title>{{'config.user.users' | translate}}
+  <mat-icon>keyboard_arrow_right</mat-icon>
+  <span class="sub-title" *ngIf="!getEdit()">{{'config.user.createUser' | translate}}</span>
+  <span class="sub-title" *ngIf="getEdit()">{{'config.user.editUser' | translate}}</span>
+</h1>
+
+<div id="nuevoUsuario" class="containerNuevoUsuario">
+  <form [formGroup]="userToCreate">
+    <div class="containerForm">
+      <div class="container-modal">
+        <mat-form-field>
+          <mat-select [disabled]="getEdit()" required placeholder="{{ 'config.user.role' | translate }}" [formControl]="roleIdFormControl"
+            [(ngModel)]="data.roleId" (change)="changeRole()">
+            <mat-option disabled selected>{{'config.user.selectRole' | translate}}</mat-option>
+            <mat-option *ngFor="let option of roleOptions" [value]="option.roleId">{{option.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="roleIdFormControl.hasError('required')">
+            {{'config.user.messageRolUser' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="getEdit() || data.roleId">
+          <input matInput required id="name" placeholder="{{ 'config.user.firstName'|translate }}" [formControl]="nameFormControl"
+            [(ngModel)]="data.name">
+          <mat-error *ngIf="nameFormControl.hasError('required') && !nameFormControl.hasError('pattern')">
+            {{'config.user.messageNameUser' | translate}}
+          </mat-error>
+          <mat-error *ngIf="nameFormControl.hasError('pattern') && !nameFormControl.hasError('required')">
+            {{'config.user.wrongNameError' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="getEdit() || data.roleId">
+          <input matInput required id="lastname" placeholder="{{ 'config.user.lastName'|translate }}" [formControl]="lastnameFormControl"
+            [(ngModel)]="data.lastname">
+          <mat-error *ngIf="lastnameFormControl.hasError('required') && !lastnameFormControl.hasError('pattern')">
+            {{'config.user.messageLastNameUser' | translate}}
+          </mat-error>
+          <mat-error *ngIf="lastnameFormControl.hasError('pattern') && !lastnameFormControl.hasError('required')">
+            {{'config.user.wrongLastnameError' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="getEdit() || data.roleId">
+          <input matInput required id="email" placeholder="{{ 'config.user.email' | translate }}" [formControl]="emailFormControl"
+            [(ngModel)]="data.email">
+          <mat-error *ngIf="emailFormControl.hasError('required')">
+            {{'config.user.messageEmail' | translate}}
+          </mat-error>
+          <mat-error *ngIf="emailFormControl.hasError('pattern')">
+            {{'config.user.messageEmailIncorrect' | translate}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="roleName == 'Vendedor'">
+          <input matInput required id="idInCustomerDb" placeholder="{{ 'config.user.idInCustomerDB' | translate }}" [formControl]="idInCustomerDbFormControl"
+            [(ngModel)]="data.idinCustomerDb">
+            <mat-hint>{{'config.user.hintIdCustomerDb' | translate}}</mat-hint>
+          <mat-error *ngIf="idInCustomerDbFormControl.hasError('required')">
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="roleName == 'Vendedor'">
+          <input matInput id="macAddress" placeholder="{{ 'config.user.MAC'|translate }}" [formControl]="macAddressFormControl" [(ngModel)]="data.macAddress">
+        </mat-form-field>
+      </div>
+
+      <div mat-dialog-actions align="end">
+        <button mat-raised-button (click)="onNoClick()" tabindex="-1">{{'general.cancel' | translate | uppercase}}</button>
+        <button *ngIf="!getEdit()" mat-raised-button color="accent" (click)="createUser()" tabindex="-1">{{'general.save' | translate | uppercase}}</button>
+        <button *ngIf="getEdit()" mat-raised-button color="accent" (click)="editUsuario()" tabindex="-1">{{'general.save' | translate | uppercase}}</button>
+      </div>
+
+    </div>
+
+  </form>
+</div>

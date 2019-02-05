@@ -1,0 +1,36 @@
+@import "../../paleta_ocp.scss";
+.subHeader{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dfe7eb;
+    padding: $standard-padding;
+    margin: 0 -$standard-padding;
+    margin-bottom: $standard-padding;
+
+    .left{
+        display:flex;
+        align-items: baseline;
+        font-weight: bold;
+        span{
+            margin-left:8px;
+            color: $gris-1;
+            font-size:12px;
+        }
+        h3{
+            font-size:16px;
+            padding:0;
+            margin:0;
+            a {
+                color:$cyan;
+            }
+        }
+        a {
+            color: $blue;
+        }
+    }
+    .right{
+        display:flex;
+        align-items: center;
+    }  
+}

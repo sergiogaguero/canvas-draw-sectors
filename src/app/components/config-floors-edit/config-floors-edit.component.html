@@ -1,0 +1,102 @@
+<div class="subHeader">
+  <div class="left">
+    <h3>
+      <a [routerLink]="['/settings/stores']">{{'general.stores' | translate}}</a>
+    </h3>
+    <span>-</span>
+    <span>
+      <a [routerLink]="['/settings/stores' , pisoInfo?.storeId]">{{'general.store' | translate}} {{pisoInfo?.store.name}} </a>
+    </span>
+    <span>-</span>
+    <span>{{pisoInfo?.name}}</span>
+  </div>
+</div>
+
+<mat-grid-list cols="3" gutterSize="24px" class="containerEditarPiso" rowHeight="1:2">
+  <mat-grid-tile [colspan]="1" class="informacion">
+    <div>
+      <div class="storeInfo">
+        <div class="id">{{pisoInfo?.store.idinCustomerDB }}</div>
+        <div class="name title">{{pisoInfo?.store.name}}</div>
+        <div class="region">{{pisoInfo?.store.region?.name}}</div>
+        <div class="persona">
+          <img src="./assets/images/avatar_profile.png" alt="{{pisoInfo.store.responsable?.name}} {{pisoInfo.store.responsable?.lastname}}">
+          <span>{{pisoInfo.store.responsable?.name}} {{pisoInfo.store.responsable?.lastname}}</span>
+        </div>
+      </div>
+
+      <div class="maps">
+        <button mat-raised-button color="accent" (click)="openNewMapDialog()" [disabled]="futureMapExists()">
+          <mat-icon>map</mat-icon>
+          <span>{{'config.store.edit.floor.loadNewMap' | translate | uppercase}}</span>
+        </button>
+        <div class="title" *ngIf="maps.length > 0">{{'config.store.edit.floor.mapHistory' | translate}}</div>
+        <mat-list>
+          <mat-list-item *ngFor="let plano of maps; let i = index" [ngClass]="{'vigente': planoVigente !== null && plano.mapId == planoVigente.mapId}" (click)="selectMap(plano.mapId)" [class.selected]="planoSeleccionado.mapId == plano.mapId">
+            <div class="iconMap">
+              <mat-icon>map</mat-icon>
+            </div>
+            <div class="vigencia">
+              <span class="tituloVigencia">{{plano.name}}</span>
+              <span class="subtituloVigencia">{{'config.store.edit.floor.mapStart' | translate}} {{plano.startingDate | date: 'dd/MM/yy'}}</span>
+            </div>
+            <div class="iconEye">
+              <button mat-icon-button *ngIf="isDateSuperior(plano.startingDate)"  (click)="openEditMapDialog(plano)">
+                <mat-icon title="{{'config.store.edit.floor.editMap' | translate}}">&#xE254;</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="isDateSuperior(plano.startingDate)"  (click)="openDeleteMapDialog(plano)">
+                <mat-icon title="{{'config.store.edit.floor.deleteMap' | translate}}">&#xE872;</mat-icon>
+              </button>
+              <!--button mat-icon-button>
+                <mat-icon (click)="copyMapDialog(plano)">&#xE14D;</mat-icon>
+              </button-->
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile class="plano" [colspan]="2">
+    <div *ngIf="maps.length == 0">{{'config.store.edit.floor.noMaps' | translate}}</div>
+    <div *ngIf="maps.length > 0 && planoSeleccionado.mapId != 0">
+      <p>
+        <span class="titulo">{{planoSeleccionado?.name}}</span>
+        -
+        <span class="fecha">{{'config.store.edit.floor.activeSince' | translate}} {{planoSeleccionado?.startingDate | date:"dd/MM/yy"}}</span>
+      </p>
+      <p class="comentario">
+        {{planoSeleccionado?.comments}}
+      </p>
+      <div class="referencias">
+        <div>
+          <span>{{'config.store.edit.floor.widthInMts' | translate | uppercase}}: {{planoSeleccionado?.width}}</span>
+        </div>
+      </div>
+      <div id="planoImg" #miDiv>
+        <div class="row" id="canvas-container">
+          <img *ngIf="imagenPlano != ''" [src]="imagenPlano" #imgPlano alt="Plano {{planoSeleccionado?.name}}" class="responsive-img" (load)="resizeCanvas()">
+          <!-- Sections canvas-->
+          <!--section-drawing class="over-map" *ngIf="planoSeleccionado?.anchoPlano > 0 && planoSeleccionado?.altoPlano > 0" [width]="planoSeleccionado.anchoPlano"
+            [height]="planoSeleccionado.altoPlano"></section-drawing -->
+
+          <!-- TODO: when there's no sections, a hover should appear. Saving this for whenever sections are used -->
+          <!-- div *ngIf="planoSeleccionado?.sections?.length < 1" class="over-map valign-wrapper center-align" id="no-sections">
+            <div class="card">
+              <div class="card-content white-text">
+                <mat-icon class="warning">&#xE002;</mat-icon>
+                <p>El plano cargado no tiene sectores asociados.</p>
+                <p>Define los sectores desde aquí.</p>
+              </div>
+              <div class="card-action">
+                <a class="white-text" [routerLink]="['sections', planoSeleccionado?.mapId]">
+                  <mat-icon>&#xE254;</mat-icon>
+                  Crear sectores
+                </a>
+              </div>
+            </div>
+          </div -->
+        </div>
+      </div>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -1,0 +1,137 @@
+@import "../../../paleta_ocp.scss";
+@import "../../styles/greyBar.style.scss";
+
+.wrapper {
+    background: $white;
+    padding: $standard-padding;
+    border-radius: 4px;
+}
+
+#selectedPeriod {
+    margin: $standard-padding 0;
+    span {
+        color: $cyan;
+        mat-icon {
+            position: relative;
+            bottom: -5px;
+            margin-top: -5px;
+        }
+    }
+}
+
+.totals {
+    color: $white;
+    background-color: $dark-blue;
+    font-size: 16px;
+    height: 80px;
+    width: 100%;
+    font-weight: normal;
+    .associate {
+        opacity: 0.3;
+    }
+    div {
+        text-align: center;
+        height: 100%;
+        position: relative;
+        align-items: center;
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        mat-icon {
+            margin-right: 10px;
+        }
+        #totals-title {
+            font-size: 14px;
+            position: absolute;
+            top: 14px;
+            left: 14px;
+        }
+    }
+}
+
+mat-header-row {
+    background-color: $bg-body;
+    color: $titulos;
+    text-align: center;
+    .table-title {
+        padding: 14px 0;
+    }
+    .mat-header-cell:first-of-type {
+        overflow: visible;
+        .table-title {
+            padding-left: $standard-padding;
+        }
+        .totals{
+            padding-left: 25px;
+            width: calc(100% + 25px);
+            margin-left: -25px;
+        }
+    }
+    .mat-header-cell:last-of-type {
+        overflow: visible;
+        .totals{
+            width: calc(100% + 25px);
+            margin-right: -25px;
+        }
+        .totals > div {
+            padding-right: 25px;
+        }
+    }
+    .mat-header-cell:nth-child(2) .totals > div {
+        background-color: $cyan;
+    }
+    .mat-header-cell:nth-child(3) .totals > div {
+        background-color: rgba($cyan, 0.8);
+    }
+    .mat-header-cell:nth-child(4) .totals > div {
+        background-color: rgba($cyan, 0.6);
+    }
+    .mat-header-cell:nth-child(5) .totals > div {
+        background-color: rgba($cyan, 0.4);
+    }
+    .mat-header-cell:nth-child(6) .totals > div {
+        background-color: rgba($cyan, 0.2);
+    }
+    ::ng-deep.mat-sort-header-container, ::ng-deep.mat-sort-header-button {
+        justify-content: center;
+        flex-wrap: wrap;
+        position: relative;
+    }
+    ::ng-deep.mat-sort-header-button {
+        width: 100%;
+    }
+    ::ng-deep.mat-sort-header-arrow {
+        position: absolute;
+        right: 15px; top: 15px;
+    }
+}
+.mat-cell {
+    text-align: center;
+    .numeric {
+        text-align: right;
+        padding-right: $small-padding;
+    }
+}
+.mat-column-associate {
+    flex-grow: 2;
+    text-align: left;
+}
+.mat-cell.mat-column-associate {
+    font-weight: bold;
+}
+.mat-cell.mat-column-sales {
+    color: $cyan;
+    font-weight: bold;
+}
+
+
+
+//FIX BECAUSE MATERIALIZE SUCKS
+input:not([type]), input:not([type]):focus:not([readonly]) {
+    margin: 0;
+    height: auto;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+}

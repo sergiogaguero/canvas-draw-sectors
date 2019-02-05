@@ -1,0 +1,58 @@
+<div class="subHeader" id="Breadcrumb">
+  <div class="left">
+    <h3>{{'config.regions.title' | translate}}</h3>
+    <span>-</span>
+    <span>{{'config.regions.subtitle' | translate}}</span>
+  </div>
+  <div class="right">
+    <button (click)="openCreateRegion()" mat-raised-button color="accent">
+      <mat-icon>add_location</mat-icon>
+      <span>{{'config.regions.addRegion' | translate | uppercase}}</span>
+    </button>
+  </div>
+</div>
+
+<mat-table #table [dataSource]="dataSource" *ngIf="regiones.length > 0">
+  <ng-container matColumnDef="region">
+    <mat-header-cell *matHeaderCellDef>{{'general.region' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="responsable">
+    <mat-header-cell *matHeaderCellDef>{{'general.responsable' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element" class="person">
+      <img src="./assets/images/avatar_profile.png" alt="">
+      <div class="info">{{element.responsable?.name}} {{element.responsable?.lastname}}</div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="store">
+    <mat-header-cell *matHeaderCellDef>{{'general.stores' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.stores.length}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>{{'general.actions' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-icon-button (click)="openEditRegion(element)" title="{{'icons.edit' | translate}}">
+        <mat-icon>mode_edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="openDeleteRegion(element)" title="{{'icons.delete' | translate}}">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+</mat-table>
+
+<div class="errorWrapper" *ngIf="regiones.length == 0">
+    <mat-icon>warning</mat-icon>
+    <h3>{{'config.regions.noRegionsErrorTitle' | translate}}</h3>
+    <p>{{'config.regions.noRegionsError' | translate}}</p>
+    <button (click)="openCreateRegion()" mat-raised-button color="accent">
+        <mat-icon>place</mat-icon> {{'config.regions.addRegion' | translate | uppercase}}
+    </button>
+</div>

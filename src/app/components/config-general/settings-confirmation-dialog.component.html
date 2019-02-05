@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>
+    {{'config.general.globalParameters' | translate}}
+    <mat-icon>&#xE315;</mat-icon>
+    <span>
+        {{'general.warning' | translate}}
+    </span>
+</h1>
+<div mat-dialog-content>
+    <p>{{'config.general.dataWillBeUpdated' | translate}}</p>
+    <p>{{'config.general.updateNow' | translate}}</p>
+    <p>
+        <mat-checkbox [(ngModel)]="data.updateNow">{{'config.general.refreshNow' | translate}}</mat-checkbox>
+    </p>
+    <p>
+        <em>{{'config.general.footnote' | translate}}</em>
+    </p>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()" tabindex="-1">{{'general.cancel' | translate | uppercase}}</button>
+    <button mat-raised-button color="accent" [mat-dialog-close]="data" tabindex="2">{{'general.save' | translate | uppercase}}</button>
+</div>

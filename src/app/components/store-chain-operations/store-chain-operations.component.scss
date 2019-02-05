@@ -1,0 +1,158 @@
+@import "../../../paleta_ocp.scss";
+@import "../../styles/greyBar.style.scss";
+
+
+
+.mat-card-header-text{
+  width: 100%;
+}
+
+.wrapper{
+  background: $white;
+  padding: $standard-padding;
+  border-radius: 4px;
+}
+
+.grey-bar{
+  flex-wrap: wrap;
+  .mat-form-field {
+      float: left;
+  }
+}
+
+.container {
+  margin: $standard-padding 0;
+  padding: $standard-padding 0;
+  height: 550px;
+}
+
+#selectedPeriod {
+    margin: $standard-padding 0;
+    >span:first-child {
+        color: $cyan;
+        mat-icon {
+            position: relative;
+            bottom: -5px;
+            margin-top: -5px;
+        }
+    }
+}
+
+#loading{
+  padding: 200px 0;
+  display: flex;
+  justify-content: center;
+}
+
+#sales {
+  background:url('../../../assets/images/background-sales_chainops.png') left top no-repeat $blue;
+  margin-bottom: 0px;
+}
+#ticketPromedio{
+  background:url("../../../assets/images/background-tp_chainops.png") left top no-repeat $blue;
+  margin-bottom: 0px;
+}
+#upt{
+  background:url("../../../assets/images/background-upt_chainops.png") left top no-repeat $blue;
+  margin-bottom: 0px;
+}
+
+.card-image {
+  width: 100%;
+  margin: $standard-padding 0;
+  padding: $standard-padding 0;
+  .kpis {
+    min-width: 340px;
+    width: 100%;
+    mat-card{
+      min-height: 217px;
+      div{
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        font-size: 70px;
+        margin-top: 16px;
+        span{
+          font-size: 35px;
+        }
+      }
+      div.title {
+        font-size: 16px;
+        font-weight: lighter;
+      }
+    }
+    .mat-card-content{
+      display: flex;
+      justify-content:space-around
+    }
+  }
+}
+
+.tooltip {
+  width: 100%;
+  display: flex;
+  justify-content:space-around;
+  .mat-icon{
+    color: rgba(256,256,256,0.5);
+  }
+}
+
+.ranking {
+  margin-top: 0px;
+}
+.mat-table::-webkit-scrollbar {
+    width: 0.6em;
+}
+
+.mat-table::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
+}
+
+.mat-table::-webkit-scrollbar-thumb {
+  background-color: $divider-border;
+  outline: 1px solid slategrey;
+}
+
+.mat-table{
+  background-color: $blue;
+  overflow-y: scroll;
+  max-height: 302px;
+  .mat-header-cell{
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    span {
+      font-size: 12px;
+    }
+
+  }
+  .mat-cell{
+    color: white;
+    display: grid;
+  }
+}
+
+#position {
+  color: $cyan;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.mat-grid-tile{
+  overflow: visible;
+}
+
+
+.arrow{
+  .mat-sort-header-arrow {
+    color: rgba(256,256,256,0.5);
+  }
+}
+
+.arrow ::ng-deep.mat-sort-header-container{
+  float: right;
+}
+
+.amount{
+  text-align: end;
+}

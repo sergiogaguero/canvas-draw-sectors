@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>
+    <span class="main-title">{{'config.store.edit.floor.editMap' | translate}}</span>
+    <mat-icon>&#xE315;</mat-icon>
+    <span class="sub-title">{{data.floorName}}</span>
+    <div class="title-detail">{{data.storeName}}</div>
+</h1>
+<mat-dialog-content>
+    <mat-form-field>
+        <input matInput [formControl]="nameFormControl" placeholder="{{'config.store.edit.floor.namePlaceholder' | translate}}" [(ngModel)]="data.map.name"
+            matTooltip="{{'config.store.edit.floor.nameTooltip' | translate}}">
+        <mat-error *ngIf="nameFormControl.hasError('required')">
+            {{'config.store.edit.floor.noNameError' | translate}}
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput [formControl]="startingDateFormControl" [matDatepicker]="picker" placeholder="{{'config.store.edit.floor.startingDatePlaceholder' | translate}}"
+            [min]="minDate" [(ngModel)]="data.map.startingDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="startingDateFormControl.hasError('required')">
+            {{'config.store.edit.floor.noStartingDateError' | translate}}
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <textarea matInput placeholder="{{'config.store.edit.floor.commentsPlaceholder' | translate}}" [(ngModel)]="data.map.comments"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="size">
+        <input matInput [formControl]="widthFormControl" type="number" placeholder="{{'config.store.edit.floor.widthPlaceholder' | translate}}"
+            [(ngModel)]="data.map.width">
+        <mat-error *ngIf="widthFormControl.hasError('required') && !widthFormControl.hasError('min')">
+            {{'config.store.edit.floor.noWidthError' | translate}}
+        </mat-error>
+        <mat-error *ngIf="widthFormControl.hasError('min') && !widthFormControl.hasError('required')">
+            {{'config.store.edit.floor.minWidthError' | translate}}
+        </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="size">
+        <input matInput [formControl]="heightFormControl" type="number" min="1" placeholder="{{'config.store.edit.floor.heightPlaceholder' | translate}}" [(ngModel)]="data.map.height">
+        <mat-error *ngIf="heightFormControl.hasError('required') && !heightFormControl.hasError('min')">
+                {{'config.store.edit.floor.noHeightError' | translate}}
+        </mat-error>
+        <mat-error *ngIf="heightFormControl.hasError('min') && !heightFormControl.hasError('required')">
+                {{'config.store.edit.floor.minHeightError' | translate}}
+        </mat-error>
+    </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()" tabindex="-1">{{'general.cancel' | translate | uppercase}}</button>
+    <button mat-raised-button color="accent" tabindex="2" (click)="saveBlueprint()">{{'general.save' | translate | uppercase}}</button>
+</mat-dialog-actions>
