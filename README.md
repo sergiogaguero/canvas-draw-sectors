@@ -1,9 +1,6 @@
-# OCP Tienda Front
-
-A retail solution for next-gen stores! :)
+# Tienda Front
 
 
-                address: '',
 # ChangeLog
 
 ## v3.6 (??/04/18)
